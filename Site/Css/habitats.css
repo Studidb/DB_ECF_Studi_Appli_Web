@@ -1,0 +1,39 @@
+/* main - Section Général */
+#Section_Marais, #Section_Savane, #Section_Jungle {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1%;
+    padding-right: 5%;
+    padding-left: 5%;
+}
+
+/* main - Section Général - Image */
+#Section_Marais img, #Section_Savane img, #Section_Jungle img {
+    width: 100%;
+    height: auto;
+}
+#Section_Marais img.alternativeA_border_color, #Section_Jungle img.alternativeA_border_color {
+    border: 3px solid #A0522D;
+}
+#Section_Savane img.alternativeB_border_color {
+    border: 3px solid #FFD700;
+}
+
+/* main - Section Général - alternance couleur A */
+#Section_Marais, #Section_Jungle {
+    background-color: #32CD32;
+    border-top: 3px solid #A0522D;;
+    border-bottom: 3px solid #A0522D;;
+}
+
+/* main - Section Général - alternance couleur B */
+#Section_Savane {
+    border-top: 3px solid #FFD700;
+    border-bottom: 3px solid #FFD700;
+    background-color: #228B22;
+}
+
+/* main - Section Général - Alignement du texte */
+p {
+    text-align: justify;
+}
