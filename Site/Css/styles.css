@@ -1,0 +1,157 @@
+/*couleur 
+#87cfebE0 = bleutransparent
+87CEEB = bleu
+A0522D = marron
+228B22 = vert fonce
+FFD700 = jaune
+32CD32 = vert claire
+FFFFFF = blanc
+
+Texte :
+Quicksand Bold 48
+Quicksand Semibold 12 (mobile)
+*/
+
+/* Styles Global */
+body {
+    font-family: "Quicksand", Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: 24px;
+    font-weight: bold;
+    background-color: #87CEEB;
+}
+
+h1 {
+    padding-top: 1%;
+    text-align: center;
+    margin: 0%;
+
+}
+hr {
+    height: 2px;
+    background-color: #A0522D;
+    border: none;
+    width: 40%;
+}
+
+/* header - Nav Général */
+#Section_Navigation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #87cfebE0;
+    padding: 5px 0;
+    z-index: 10;
+    color: white;
+    border-bottom: 5px solid #A0522D;
+}
+
+/* header - Alignement Nav */
+#Section_Navigation nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+/* header - Alignement du menu */
+#Section_Navigation nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 30px;
+}
+
+/* header - Design du menu en hover */
+#Menu li:hover {
+    color: #FFD700;
+    font-size: ;
+}
+
+/* header - Design du boutton connexion */
+#Connexion {
+    border: 3px solid #FFD700;
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 1cap;
+    background-color: #32CD32;
+}
+
+/* header - Design du boutton en hover */
+#Connexion:hover {
+    border: 3px solid #A0522D;
+    background-color: #FFD700;
+    color: #A0522D;
+}
+
+/* header - Ajustement bannière */
+#Section_Banniere img {
+    display: flex;
+    width: 100%;
+    height: auto;
+}
+
+/* main - Section Général */
+#Section_APropos, #Section_Services, #Section_Habitats, #Section_Avis {
+    color: white;
+    display: flex;
+    flex-direction: column;
+    margin-top: 1%;
+    padding-right: 5%;
+    padding-left: 5%;
+}
+
+/* main - Section Général - alternance couleur A */
+#Section_APropos, #Section_Habitats {
+    border-top: 3px solid #FFD700;
+    border-bottom: 3px solid #FFD700;
+    background-color: #228B22;
+}
+
+/* main - Section Général - alternance couleur B */
+#Section_Services, #Section_Avis {
+    border-top: 3px solid #A0522D;
+    border-bottom: 3px solid #A0522D;
+    background-color: #32CD32;
+}
+
+/* main - Section À Propos - alignement contenu */
+#Section_APropos {
+    align-items: center;
+}
+
+/* main - Section À Propos - h1 */
+#Section_APropos h1 {
+    display: flex;
+}
+
+/* main - Section À Propos - Conteneur Image*/
+#Section_APropos div {
+    display: flex;
+    flex-direction: row;
+    gap: 1%;
+}
+
+/* main - Section À Propos - Image */
+#Section_APropos img {
+    width: 49.5%;
+    height: auto;
+}
+
+/* main - Section À Propos - p */
+#Section_APropos p {
+    text-align: justify;
+}
+
+/* main - Section À Propos - Image */
+#Section_Services {
+
+}
