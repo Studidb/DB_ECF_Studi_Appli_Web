@@ -27,10 +27,12 @@ align-items: center;
 #Section_Services img, #Section_Habitats img {
     width: 100%;
     height: auto;
-    border: 3px solid #A0522D;
     }
 
-#Section_Services img.alternative_border_color, #Section_Habitats img.alternative_border_color{
+#Section_Services img.alternativeA_border_color, #Section_Habitats img.alternativeA_border_color {
+    border: 3px solid #A0522D;
+}
+#Section_Services img.alternativeB_border_color, #Section_Habitats img.alternativeB_border_color{
     border: 3px solid #FFD700;
 }
 
