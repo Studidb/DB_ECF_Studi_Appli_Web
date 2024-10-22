@@ -1,0 +1,77 @@
+/* main - Section Général */
+#Section_APropos, #Section_Services, #Section_Habitats, #Section_Avis {
+    color: white;
+    display: flex;
+    flex-direction: column;
+    margin-top: 1%;
+    padding-right: 5%;
+    padding-left: 5%;
+}
+
+/* main - Section Général - Alignement des conteneurs sections Services et Habitats */
+.accueil_carte_conteneur{
+    display: flex;
+    flex-direction: row;
+    gap: 1%;
+    text-align: center;
+}
+
+/* main - Section Général - Alignement des cartes des sections Services et Habitats */
+.acceuil_carte {
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+/* main - Section Général - Images Services et Habitats */
+#Section_Services img, #Section_Habitats img {
+    width: 100%;
+    height: auto;
+    border: 3px solid #A0522D;
+    }
+
+#Section_Services img.alternative_border_color, #Section_Habitats img.alternative_border_color{
+    border: 3px solid #FFD700;
+}
+
+/* main - Section Général - alternance couleur A */
+#Section_APropos, #Section_Habitats {
+    border-top: 3px solid #FFD700;
+    border-bottom: 3px solid #FFD700;
+    background-color: #228B22;
+}
+
+/* main - Section Général - alternance couleur B */
+#Section_Services, #Section_Avis {
+    border-top: 3px solid #A0522D;
+    border-bottom: 3px solid #A0522D;
+    background-color: #32CD32;
+}
+
+/* main - Section À Propos - alignement contenu */
+#Section_APropos {
+    align-items: center;
+}
+
+/* main - Section À Propos - h1 */
+#Section_APropos h1 {
+    display: flex;
+}
+
+/* main - Section À Propos - Conteneur Image*/
+#Section_APropos div {
+    display: flex;
+    flex-direction: row;
+    gap: 1%;
+}
+
+/* main - Section À Propos - Image */
+#Section_APropos img {
+    width: 49.5%;
+    height: auto;
+}
+
+/* main - Section À Propos - p */
+#Section_APropos p {
+    text-align: justify;
+}
