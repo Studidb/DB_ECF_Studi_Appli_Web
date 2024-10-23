@@ -7,6 +7,7 @@
     <link href='https://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet'>
     <link rel="stylesheet" href="/Site/Css/accueil.css">
     <link rel="stylesheet" href="/Site/Css/styles.css">
+    <link rel="stylesheet" href="/Site/Css/stylesMobile.css">
     <title>Accueil Arcadia</title>
 </head>
 <body>
@@ -23,14 +24,14 @@
         </section>
         
         <!-- Section Menu de Navigation -->
-        <section id="Section_Navigation">
+        <section class="Section_Navigation" id="Section_Navigation">
             <div>
                 <nav>
                     <ul id="Menu">
                         <li class="page_navigante">Accueil</li>
                         <li><a href="/Site/Html/services.html">Services</a></li>
                         <li><a href="/Site/Html/habitats.html">Habitats</a></li>
-                        <li>Contact</li>
+                        <li><a href="/Site/Html/contact.html">Contact</a></li>
                     </ul>
                     <ul>
                         <li id="Connexion">Connexion</li>
@@ -38,6 +39,16 @@
                 </nav>
             </div>
         </section>
+
+        <!-- Menu Burger pour les petits écrans -->
+        <section class="burger-menu" id="burger-menu">
+            <div class="barre"></div>
+            <div class="barre"></div>
+            <div class="barre"></div>
+        </section>
+
+        <!-- Script Js affichage du menu Navigation -->
+        <script src="/Script/Js/script.js"></script>
     </header>
 
     <!-- Les différentes Sections de la page d'acceuil -->
