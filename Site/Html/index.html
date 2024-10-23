@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href='https://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet'>
+    <link rel="stylesheet" href="/Site/Css/accueil.css">
+    <link rel="stylesheet" href="/Site/Css/styles.css">
+    <link rel="stylesheet" href="/Site/Css/stylesMobile.css">
+    <title>Accueil Arcadia</title>
+</head>
+<body>
+
+    <!-- Menu Navigation et Banniere -->
+    <header>
+
+        <!-- Section Banniere -->
+        <section id="Section_Banniere">
+            <div>
+                <h1 class="Titre_Banniere">Accueil</h1>
+                <img src="/Ressources/Images/Banniere/BanniereArcadia.png" alt="Grande image d'en-tête représentant un zoo">
+            </div>
+        </section>
+        
+        <!-- Section Menu de Navigation -->
+        <section class="Section_Navigation" id="Section_Navigation">
+            <div>
+                <nav>
+                    <ul id="Menu">
+                        <li class="page_navigante">Accueil</li>
+                        <li><a href="/Site/Html/services.html">Services</a></li>
+                        <li><a href="/Site/Html/habitats.html">Habitats</a></li>
+                        <li><a href="/Site/Html/contact.html">Contact</a></li>
+                    </ul>
+                    <ul>
+                        <li id="Connexion">Connexion</li>
+                    </ul>
+                </nav>
+            </div>
+        </section>
+
+        <!-- Menu Burger pour les petits écrans -->
+        <section class="burger-menu" id="burger-menu">
+            <div class="barre"></div>
+            <div class="barre"></div>
+            <div class="barre"></div>
+        </section>
+
+        <!-- Script Js affichage du menu Navigation -->
+        <script src="/Script/Js/script.js"></script>
+    </header>
+
+    <!-- Les différentes Sections de la page d'acceuil -->
+    <main>
+
+        <!-- Section à propos -->
+        <section id="Section_APropos">
+            <h1>Qu'est ce qu'Arcadia ?</h1>
+            <hr>
+            <div>
+                <img src="/Ressources/Images/Animaux/GirafeGeneral.png" alt="Image d'une girafe dans son habitat">
+                <img src="/Ressources/Images/Animaux/LionGeneral.png" alt="Image d'un lion dans son habitat">
+            </div>
+            <p>
+                Situé en Bretagne, près de la forêt de Brocéliande, le zoo d’Arcadia accueille depuis 1960 une grande diversité d’animaux répartis par habitat (savane, jungle, marais). Engagé dans la préservation de la faune et la durabilité, il offre aux visiteurs une expérience immersive et éducative, en mettant l'accent sur le bien-être animal et le respect de l’environnement.
+            </p>
+        </section>
+        
+        <!-- Section Services -->
+        <section id="Section_Services">
+            <h1>Nos Services</h1>
+            <hr>
+            <div class="accueil_carte_conteneur">
+                <div>
+                    <img src="/Ressources/Images/Services/RestaurantArcadia.png" alt="Image du Restaurant d'Arcadia" class="alternativeA_border_color">
+                    <p>Le restaurant d’Arcadia propose des repas bio avec vue sur les habitats, tout en respectant l’engagement écologique du zoo.</p>
+                </div>
+                <div>
+                    <img src="/Ressources/Images/Services/PetitTrainArcadia.png" alt="Image du train d'Arcadia" class="alternativeB_border_color">
+                    <p>Le petit train permet de découvrir les habitats du zoo confortablement, avec des explications sur la faune.</p>
+                </div>
+                <div>
+                    <img src="/Ressources/Images/Services/GuideArcadia.png" alt="Image d'un guide d'Arcadia" class="alternativeA_border_color">
+                    <p>Les guides partagent leurs connaissances pour une visite immersive et éducative des animaux et écosystèmes du parc.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Section Habitats -->
+        <section id="Section_Habitats">
+            <h1>Les Habitats</h1>
+            <hr>
+            <div class="accueil_carte_conteneur">
+                <div class="acceuil_carte">
+                    <img src="/Ressources/Images/Habitats/MaraisArcadia.png" alt="Image du Restaurant d'Arcadia" class="alternativeB_border_color">
+                    <p>Environnement humide avec étang et végétation dense, idéal pour les crocodiles et oiseaux aquatiques.</p>
+                </div>
+                <div class="acceuil_carte">
+                    <img src="/Ressources/Images/Habitats/SavaneArcadia.png" alt="Image du train d'Arcadia" class="alternativeA_border_color">
+                    <p>Grande plaine ouverte avec hautes herbes et acacias, abritant girafes, zèbres et antilopes.</p>
+                </div>
+                <div class="acceuil_carte">
+                    <img src="/Ressources/Images/Habitats/JungleArcadia.png" alt="Image d'un guide d'Arcadia" class="alternativeB_border_color">
+                    <p>Forêt tropicale dense avec lianes et rivières, peuplée de singes et d’oiseaux exotiques.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Section Avis -->
+        <section id="Section_Avis">
+            <div>
+                <h1>Avis</h1>
+                <hr>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

@@ -1,0 +1,177 @@
+/*couleur 
+#87cfebE0 = bleutransparent
+87CEEB = bleu
+A0522D = marron
+228B22 = vert fonce
+FFD700 = jaune
+32CD32 = vert claire
+FFFFFF = blanc
+
+Texte :
+Quicksand Bold 48
+Quicksand Semibold 12 (mobile)
+*/
+
+/* Styles Global */
+@media (max-width: 728px){
+body {
+    width: 100%;;
+    font-family: "Quicksand", Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: 12px;
+    font-weight: bold;
+    background-color: #87CEEB;
+}
+
+h1 {
+    padding-top: 1%;
+    text-align: center;
+    margin: 0%;
+    font-family: "Quicksand", Arial, sans-serif;
+    font-size: 14px;
+    color: white;
+    font-weight: bold;
+}
+
+p {
+    font-family: "Quicksand", Arial, sans-serif;
+    font-size: 12px;
+    color: white;
+    font-weight: bold;
+}
+
+hr {
+    height: 1px;
+    background-color: #A0522D;
+    border: none;
+    width: 40%;
+}
+
+
+/* header - Nav Général */
+#Section_Navigation {
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.400);
+    border-radius: 1cap;
+    z-index: 10;
+    color: white;
+}
+
+/* Styles pour le bouton burger */
+.burger-menu {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 35px;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.400);
+    padding-left: 3px;
+    padding-right: 3px;
+    border-radius: 1cap;
+    z-index: 10;
+}
+
+.burger-menu .barre {
+    height: 5px;
+    background-color: white;
+    margin: 6px 0;
+    border-radius: 2px;
+}
+
+/* Menu visible lorsqu'il est activé */
+#Section_Navigation.active {
+    display: block;
+}
+
+/* Menu burger caché lorsque le menu est ouvert */
+#burger-menu.active {
+    display: none; /* Masquer l'icône burger */
+}
+
+/* header - Alignement Nav */
+#Section_Navigation nav {
+    display: flex;
+    flex-direction: column;
+}
+
+/* header - Alignement du menu */
+#Section_Navigation nav ul {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 5px;
+}
+
+/* header - Design du menu en hover */
+#Menu li:hover, Menu a:hover {
+    color: #FFD700;
+    font-size: 14px;
+}
+#Menu a:hover {
+    text-decoration: none;
+    color: #FFD700;
+    font-size: 14px;
+}
+
+/* header - Design des hyperlien*/
+#Menu a {
+    text-decoration: none;
+    color: white;
+}
+
+/* header - Design page navigante */
+.page_navigante {
+    color: #FFD700;
+}
+/*
+/* header - Design du boutton connexion */
+#Connexion {
+    border: 1px solid #FFD700;
+    margin-top: 5px;
+    transform: translate(-5px);
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border-radius: 1cap;
+    background-color: #32CD32;
+}
+
+/* header - Design du boutton en hover */
+#Connexion:hover {
+    border: 3px solid #A0522D;
+    background-color: #FFD700;
+    color: #A0522D;
+}
+
+/* Titre banniere et page */
+.Titre_Banniere {
+    position: absolute;
+    top: 10px;
+    translate: -50%;
+    left: 50%;
+    color: white;
+    background-color: #A0522D;
+    border: 3px solid #FFD700;
+    border-radius: 30px;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* header - Ajustement bannière */
+#Section_Banniere img {
+    display: flex;
+    width: 100%;
+    height: auto;
+}
+}
