@@ -1,3 +1,33 @@
+<?php
+// Connexion à la base de données MySQL
+$host = 'localhost';
+$dbname = 'base_test_connectivite';
+$username = 'root';
+$password = '';
+
+try {
+    // Créer une connexion PDO
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+    
+    // Configurer PDO pour afficher les erreurs en tant qu'exceptions
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // Requête SQL pour récupérer le message avec l'ID 1
+    $stmt = $pdo->prepare('SELECT message FROM messages WHERE id = :id');
+    $stmt->execute(['id' => 1]); 
+    $message = $stmt->fetchColumn(); 
+
+    // Message par défaut si rien n'est trouvé
+    if (!$message) {
+        $message = "Aucun message trouvé."; 
+    }
+
+    // En cas d'erreur, afficher le message d'erreur
+} catch (PDOException $e) {
+    echo "Erreur de connexion ou de requête : " . $e->getMessage();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -28,10 +58,10 @@
             <div>
                 <nav>
                     <ul id="Menu">
-                        <li><a href="/Site/Html/index.html">Accueil</a></li>
+                        <li><a href="/Site/Html/index.php">Accueil</a></li>
                         <li class="page_navigante">Services</li>
-                        <li><a href="/Site/Html/habitats.html">Habitats</a></li>
-                        <li><a href="/Site/Html/contact.html">Contact</a></li>
+                        <li><a href="/Site/Html/habitats.php">Habitats</a></li>
+                        <li><a href="/Site/Html/contact.php">Contact</a></li>
                     </ul>
                     <ul>
                         <li id="Connexion">Connexion</li>

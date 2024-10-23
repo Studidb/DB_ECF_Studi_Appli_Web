@@ -8,6 +8,7 @@
     padding-left: 5%;
 }
 
+@media (min-width: 728px){
 /* main - Section Général - Alignement des conteneurs sections Services et Habitats */
 .accueil_carte_conteneur{
     display: flex;
@@ -15,6 +16,17 @@
     gap: 1%;
     text-align: center;
 }
+}
+
+@media (max-width: 728px){
+    /* main - Section Général - Alignement des conteneurs sections Services et Habitats */
+    .accueil_carte_conteneur{
+        display: flex;
+        flex-direction: column;
+        gap: 1%;
+        text-align: center;
+    }
+    }
 
 /* main - Section Général - Alignement des cartes des sections Services et Habitats */
 .acceuil_carte {
@@ -29,12 +41,12 @@ align-items: center;
     height: auto;
     }
 
-#Section_Services img.alternativeA_border_color, #Section_Habitats img.alternativeA_border_color {
-    border: 3px solid #A0522D;
-}
-#Section_Services img.alternativeB_border_color, #Section_Habitats img.alternativeB_border_color{
-    border: 3px solid #FFD700;
-}
+    #Section_Services img.alternativeA_border_color, #Section_Habitats img.alternativeA_border_color {
+        border: 3px solid #A0522D;
+    }
+    #Section_Services img.alternativeB_border_color, #Section_Habitats img.alternativeB_border_color{
+        border: 3px solid #FFD700;
+    }
 
 /* main - Section Général - alternance couleur A */
 #Section_APropos, #Section_Habitats {

@@ -1,3 +1,33 @@
+<?php
+// Connexion à la base de données MySQL
+$host = 'localhost';
+$dbname = 'base_test_connectivite';
+$username = 'root';
+$password = '';
+
+try {
+    // Créer une connexion PDO
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+    
+    // Configurer PDO pour afficher les erreurs en tant qu'exceptions
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // Requête SQL pour récupérer le message avec l'ID 1
+    $stmt = $pdo->prepare('SELECT message FROM messages WHERE id = :id');
+    $stmt->execute(['id' => 1]); 
+    $message = $stmt->fetchColumn(); 
+
+    // Message par défaut si rien n'est trouvé
+    if (!$message) {
+        $message = "Aucun message trouvé."; 
+    }
+
+    // En cas d'erreur, afficher le message d'erreur
+} catch (PDOException $e) {
+    echo "Erreur de connexion ou de requête : " . $e->getMessage();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -29,9 +59,9 @@
                 <nav>
                     <ul id="Menu">
                         <li class="page_navigante">Accueil</li>
-                        <li><a href="/Site/Html/services.html">Services</a></li>
-                        <li><a href="/Site/Html/habitats.html">Habitats</a></li>
-                        <li><a href="/Site/Html/contact.html">Contact</a></li>
+                        <li><a href="/Site/Html/services.php">Services</a></li>
+                        <li><a href="/Site/Html/habitats.php">Habitats</a></li>
+                        <li><a href="/Site/Html/contact.php">Contact</a></li>
                     </ul>
                     <ul>
                         <li id="Connexion">Connexion</li>
@@ -53,6 +83,35 @@
 
     <!-- Les différentes Sections de la page d'acceuil -->
     <main>
+
+        <!-- Test affichage message BDD -->
+        <p><?php echo htmlspecialchars($message); ?></p>
+
+        <p><?php
+// Vérifier que l'extension MongoDB est activée
+if (extension_loaded("mongodb")) {
+    echo "<p>Extension MongoDB est activée.</p>";
+
+    // Connexion à MongoDB
+    try {
+        $manager = new MongoDB\Driver\Manager("mongodb://localhost:27017");
+
+        // Créer un document pour insertion
+        $bulk = new MongoDB\Driver\BulkWrite;
+        $document = ['_id' => new MongoDB\BSON\ObjectID, 'name' => 'Test User', 'email' => 'test@example.com'];
+        $bulk->insert($document);
+
+        // Exécuter l'insertion
+        $manager->executeBulkWrite('test_database.test_collection', $bulk);
+
+        echo "<p>Document inséré avec succès dans MongoDB.</p>";
+    } catch (MongoDB\Driver\Exception\Exception $e) {
+        echo "<p>Erreur lors de la connexion ou de l'insertion dans MongoDB : " . $e->getMessage() . "</p>";
+    }
+} else {
+    echo "<p>Extension MongoDB n'est pas activée. Vérifiez la configuration de PHP.</p>";
+}
+?></p>
 
         <!-- Section à propos -->
         <section id="Section_APropos">

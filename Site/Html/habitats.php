@@ -1,3 +1,33 @@
+<?php
+// Connexion à la base de données MySQL
+$host = 'localhost';
+$dbname = 'base_test_connectivite';
+$username = 'root';
+$password = '';
+
+try {
+    // Créer une connexion PDO
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+    
+    // Configurer PDO pour afficher les erreurs en tant qu'exceptions
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // Requête SQL pour récupérer le message avec l'ID 1
+    $stmt = $pdo->prepare('SELECT message FROM messages WHERE id = :id');
+    $stmt->execute(['id' => 1]); 
+    $message = $stmt->fetchColumn(); 
+
+    // Message par défaut si rien n'est trouvé
+    if (!$message) {
+        $message = "Aucun message trouvé."; 
+    }
+
+    // En cas d'erreur, afficher le message d'erreur
+} catch (PDOException $e) {
+    echo "Erreur de connexion ou de requête : " . $e->getMessage();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -28,10 +58,10 @@
             <div>
                 <nav>
                     <ul id="Menu">
-                        <li><a href="/Site/Html/index.html">Accueil</a></li>
-                        <li><a href="/Site/Html/services.html">Services</a></li>
+                        <li><a href="/Site/Html/index.php">Accueil</a></li>
+                        <li><a href="/Site/Html/services.php">Services</a></li>
                         <li class="page_navigante">Habitats</li>
-                        <li><a href="/Site/Html/contact.html">Contact</a></li>
+                        <li><a href="/Site/Html/contact.php">Contact</a></li>
                     </ul>
                     <ul>
                         <li id="Connexion">Connexion</li>
@@ -70,7 +100,7 @@
             <hr>
             <div>
                     <img src="/Ressources/Images/Habitats/SavaneArcadia.png" alt="Image de la Savane d'Arcadia" class="alternativeB_border_color">
-                    <p>à remplir</p>
+                    <p>L'habitat de la savane recrée une vaste plaine ouverte, parsemée de hautes herbes dorées et de rares acacias. Il offre un espace idéal pour les girafes, zèbres, antilopes et autres herbivores, ainsi que pour les prédateurs emblématiques comme les lions. Ce cadre naturel permet d'observer la faune dans un environnement simulant parfaitement la chaleur et l'étendue infinie de la savane africaine.</p>
                 </div>
         </section>
 
@@ -80,7 +110,7 @@
                     <hr>
                     <div>
                             <img src="/Ressources/Images/Habitats/JungleArcadia.png" alt="Image de la Jungle d'Arcadia" class="alternativeA_border_color">
-                            <p>Depuis 1960, le zoo d’Arcadia, niché dans la forêt légendaire de Brocéliande en Bretagne, est bien plus qu’un simple lieu d’exposition animale : c’est une aventure éducative et enrichissante. Réparti en différents habitats (savane, jungle, marais), le parc accueille une grande diversité d’espèces tout en mettant un point d'honneur à leur bien-être et à la préservation de l'environnement.</p>
+                            <p>L'habitat de la jungle recrée une forêt tropicale dense, avec une végétation épaisse, des lianes enchevêtrées et des rivières sinueuses. Cet environnement luxuriant est parfait pour les singes, oiseaux exotiques et autres animaux tropicaux. La canopée haute et la richesse de la flore offrent un cadre propice à l'observation de la vie sauvage dans l'un des écosystèmes les plus diversifiés et mystérieux de la planète.</p>
                     </div>
                 </section>
     </main>
