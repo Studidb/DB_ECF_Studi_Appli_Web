@@ -1,3 +1,5 @@
+// Fonctionnalité Responsive => Menu Burger ou pas
+
 // Sélectionner les éléments du DOM
 const burgerMenu = document.getElementById('burger-menu');
 const Section_Navigation = document.getElementById('Section_Navigation');
@@ -22,4 +24,24 @@ document.addEventListener('click', (event) => {
     Section_Navigation.classList.remove('active');
     burgerMenu.classList.remove('active');
     }
+});
+
+// Fonctionnalité Habitats => Affichage des animaux au clic
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Sélectionne toutes les images d'habitats
+    const habitatImages = document.querySelectorAll('.habitat_image');
+
+    habitatImages.forEach((image) => {
+        image.addEventListener('click', () => {
+            // Récupère le conteneur parent de l'image d'habitat
+            const habitatContainer = image.parentElement;
+            
+            // Sélectionne le conteneur des animaux associés à cet habitat
+            const animalsContainer = habitatContainer.querySelector('.animal');
+            
+            // Bascule l'affichage des animaux
+            animalsContainer.style.display = animalsContainer.style.display === 'none' ? 'block' : 'none';
+        });
+    });
 });

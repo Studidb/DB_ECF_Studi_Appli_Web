@@ -84,35 +84,59 @@ try {
     <!-- Les différentes Sections de la page services -->
     <main>
 
-        <!-- Section Train -->
+        <!-- Section Marais -->
         <section id="Section_Marais">
             <h1>Le Marais</h1>
             <hr>
             <div>
-                    <img src="/Ressources/Images/Habitats/MaraisArcadia.png" alt="Image du Marais d'Arcadia" class="alternativeA_border_color">
+                <img src="/Ressources/Images/Habitats/MaraisArcadia.png" alt="Image du Marais d'Arcadia" class="habitat_image alternativeA_border_color">
+                <div class="animal" style="display: none;">
+                    <h1>Rosie la Flamant Rose</h1>
+                    <hr>
+                    <img src="/Ressources/Images/Animaux/FlamingoGeneral.png" alt="Flamant Rose" class="animal_image">
+                    <h1>Nector le Crocodile</h1>
+                    <hr>
+                    <img src="/Ressources/Images/Animaux/CrocodileGeneral.png" alt="Crocodile" class="animal_image">
                     <p>L'habitat des marais recrée un environnement humide avec un grand étang, des rives boueuses et une végétation luxuriante. Idéal pour les crocodiles et oiseaux aquatiques, il offre un espace serein et naturel propice à l'observation de la faune des zones marécageuses.</p>
-                    </div>
+                </div>
+            </div>
         </section>
         
-        <!-- Section Restaurant -->
+        <!-- Section Savane -->
         <section id="Section_Savane">
             <h1>La Savane</h1>
             <hr>
             <div>
-                    <img src="/Ressources/Images/Habitats/SavaneArcadia.png" alt="Image de la Savane d'Arcadia" class="alternativeB_border_color">
+                <img src="/Ressources/Images/Habitats/SavaneArcadia.png" alt="Image de la Savane d'Arcadia" class="habitat_image alternativeB_border_color">
+                <div class="animal" style="display: none;">
+                    <h1>Roger le Lion</h1>
+                    <hr>
+                    <img src="/Ressources/Images/Animaux/LionGeneral.png" alt="Lion" class="animal_image">
+                    <h1>Giselle la Girafe</h1>
+                    <hr>
+                    <img src="/Ressources/Images/Animaux/GirafeGeneral.png" alt="Girafe" class="animal_image">
                     <p>L'habitat de la savane recrée une vaste plaine ouverte, parsemée de hautes herbes dorées et de rares acacias. Il offre un espace idéal pour les girafes, zèbres, antilopes et autres herbivores, ainsi que pour les prédateurs emblématiques comme les lions. Ce cadre naturel permet d'observer la faune dans un environnement simulant parfaitement la chaleur et l'étendue infinie de la savane africaine.</p>
                 </div>
+            </div>
         </section>
 
-                <!-- Section Guide -->
-                <section id="Section_Jungle">
-                    <h1>La Jungle</h1>
-                    <hr>
-                    <div>
-                            <img src="/Ressources/Images/Habitats/JungleArcadia.png" alt="Image de la Jungle d'Arcadia" class="alternativeA_border_color">
-                            <p>L'habitat de la jungle recrée une forêt tropicale dense, avec une végétation épaisse, des lianes enchevêtrées et des rivières sinueuses. Cet environnement luxuriant est parfait pour les singes, oiseaux exotiques et autres animaux tropicaux. La canopée haute et la richesse de la flore offrent un cadre propice à l'observation de la vie sauvage dans l'un des écosystèmes les plus diversifiés et mystérieux de la planète.</p>
-                    </div>
-                </section>
+        <!-- Section Jungle -->
+        <section id="Section_Jungle">
+            <h1>La Jungle</h1>
+            <hr>
+            <div>
+                <img src="/Ressources/Images/Habitats/JungleArcadia.png" alt="Image de la Jungle d'Arcadia" class="habitat_image alternativeA_border_color">
+                <div class="animal" style="display: none;">
+                    <h1>Ficelle le Serpent</h1>
+                    <hr>   
+                    <img src="/Ressources/Images/Animaux/SerpentGeneral.png" alt="Serpent" class="animal_image">
+                    <h1>Jack le Jaguar</h1>
+                    <hr>   
+                    <img src="/Ressources/Images/Animaux/JaguarGeneral.png" alt="Jaguar" class="animal_image">
+                    <p>L'habitat de la jungle recrée une forêt tropicale dense, avec une végétation épaisse, des lianes enchevêtrées et des rivières sinueuses. Cet environnement luxuriant est parfait pour les singes, oiseaux exotiques et autres animaux tropicaux. La canopée haute et la richesse de la flore offrent un cadre propice à l'observation de la vie sauvage dans l'un des écosystèmes les plus diversifiés et mystérieux de la planète.</p>
+                </div>
+            </div>
+        </section>
     </main>
 </body>
 </html>
