@@ -45,3 +45,28 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+// Script JavaScript pour cacher un élément avec la classe "Cache" et l'afficher ou le cacher au clic
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Récupérer tous les éléments ayant la classe "Cache"
+    const elementsCaches = document.querySelectorAll('.Cache');
+
+    // Parcourir chaque élément et ajouter des écouteurs d'événements
+    elementsCaches.forEach(function(element) {
+        // Cacher initialement l'élément
+        element.style.display = 'none';
+
+        // Ajouter un événement de clic sur la div parente pour afficher ou cacher l'élément
+        if (element.parentNode) {
+            element.parentNode.addEventListener('click', function() {
+                // Alterner l'affichage de l'élément caché
+                if (element.style.display === 'none') {
+                    element.style.display = 'block';
+                } else {
+                    element.style.display = 'none';
+                }
+            });
+        }
+    });
+});
