@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const habitatContainer = image.parentElement;
             
             // Sélectionne le conteneur des animaux associés à cet habitat
-            const animalsContainer = habitatContainer.querySelector('.animal');
+            const animalsContainer = habitatContainer.querySelector('.animal2');
             
             // Bascule l'affichage des animaux
             animalsContainer.style.display = animalsContainer.style.display === 'none' ? 'block' : 'none';
@@ -70,3 +70,25 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+// Fonction pour afficher la popup
+function ouvrirPopup() {
+    document.getElementById("popupFormulaire").style.display = "flex";
+}
+
+// Fonction pour fermer la popup
+function fermerPopup() {
+    document.getElementById("popupFormulaire").style.display = "none";
+}
+
+// Fermer la popup si l'utilisateur clique en dehors du formulaire
+window.onclick = function(event) {
+    var popup = document.getElementById("popupFormulaire");
+    if (event.target == popup) {
+        popup.style.display = "none";
+    }
+}
+
+function deconnexion() {
+    window.location.href = 'deconnexion.php';
+}
