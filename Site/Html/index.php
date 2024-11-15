@@ -31,7 +31,6 @@ if(isset($_POST['envoi'])){
     }
     // Vérification de la connexion dans le reste du code
 $isUserConnected = isset($_SESSION['email']);
-
 ?>
 
 <!DOCTYPE html>
@@ -44,6 +43,7 @@ $isUserConnected = isset($_SESSION['email']);
     <link rel="stylesheet" href="/Site/Css/accueil.css?v=2">
     <link rel="stylesheet" href="/Site/Css/styles.css?v=2">
     <link rel="stylesheet" href="/Site/Css/stylesMobile.css?v=2">
+
     <title>Accueil Arcadia</title>
 </head>
 <body>
@@ -69,16 +69,16 @@ $isUserConnected = isset($_SESSION['email']);
                         <li><a href="/Site/Html/contact.php">Contact</a></li>
                         <?php 
                             // Vérifier si l'utilisateur est connecté et s'il a le rôle "Veterinaire"
-                            if (isset($_SESSION['email']) && isset($_SESSION['motDePasse']) && isset($_SESSION['roleUtilisateur']) && ($_SESSION['roleUtilisateur'] == "Veterinaire"|| $_SESSION['roleUtilisateur'] == "Admin")) {
+                            if (isset($_SESSION['email']) && isset($_SESSION['roleUtilisateur']) && ($_SESSION['roleUtilisateur'] == "Veterinaire"|| $_SESSION['roleUtilisateur'] == "Admin")) {
                                 // L'utilisateur est connecté en tant que vétérinaire, on affiche son espace
                                 echo '<li><a href="/Site/Html/Veterinaire.php">Espace Veto</a></li>';
                             }
-                            if (isset($_SESSION['email']) && isset($_SESSION['motDePasse']) && isset($_SESSION['roleUtilisateur']) && ($_SESSION['roleUtilisateur'] == "Employe"|| $_SESSION['roleUtilisateur'] == "Admin")) {
-                                // L'utilisateur est connecté en tant que vétérinaire, on affiche son espace
+                            if (isset($_SESSION['email']) && isset($_SESSION['roleUtilisateur']) && ($_SESSION['roleUtilisateur'] == "Employe"|| $_SESSION['roleUtilisateur'] == "Admin")) {
+                                // L'utilisateur est connecté en tant qu'employé, on affiche son espace
                                 echo '<li><a href="/Site/Html/Employe.php">Espace Employé</a></li>';
                             } 
-                            if (isset($_SESSION['email']) && isset($_SESSION['motDePasse']) && isset($_SESSION['roleUtilisateur']) && $_SESSION['roleUtilisateur'] == "Admin") {
-                                // L'utilisateur est connecté en tant que vétérinaire, on affiche son espace
+                            if (isset($_SESSION['email']) && isset($_SESSION['roleUtilisateur']) && $_SESSION['roleUtilisateur'] == "Admin") {
+                                // L'utilisateur est connecté en tant qu'administrateur, on affiche son espace
                                 echo '<li><a href="/Site/Html/Administrateur.php">Espace Administrateur</a></li>';
                             } 
                         ?>
@@ -86,9 +86,8 @@ $isUserConnected = isset($_SESSION['email']);
                     <ul>        
                     <?php 
                         // Vérifier si l'utilisateur est connecté en utilisant la session
-                        if (isset($_SESSION['email']) && isset($_SESSION['motDePasse'])) {
-                            // L'utilisateur est connecté, on affiche l'email
-                            echo "<li>" . $_SESSION['email'] . "</li>";
+                        if (isset($_SESSION['email'])) {
+                            // L'utilisateur est connecté, on affiche un bouton de déconnexion
                             echo '<button id="Connexion" onclick="deconnexion()">Déconnexion</button>';
                         } else {
                             // L'utilisateur n'est pas connecté, on affiche le bouton de connexion
@@ -122,9 +121,6 @@ $isUserConnected = isset($_SESSION['email']);
             <div class="barre"></div>
             <div class="barre"></div>
         </section>
-
-        <!-- Script Js affichage du menu Navigation -->
-        <script src="/Script/Js/script.js"></script>
     </header>
 
     <!-- Les différentes Sections de la page d'acceuil -->
@@ -213,8 +209,69 @@ if (extension_loaded("mongodb")) {
             <div>
                 <h1>Avis</h1>
                 <hr>
+                <?php
+                echo '<li class="sansPunaise"><button id="Connexion" onclick="ouvrirPopupAvis()">Laissez un avis</button></li>';
+                ?>
+                <!-- Popup formulaire Connexion -->
+                <div id="popupAvis" class="modal">
+                    <div class="modal-content">
+                        <span class="close-btn" onclick="fermerPopupAvis()">&times;</span>
+                        <h2>Laissez un avis</h2>
+                        <form action="" method="POST">
+                            <label for="pseudo">Votre pseudonyme :</label>
+                            <input type="text" id="pseudo" name="pseudo" required autocomplete="on" value="Anonyme">
+                            
+                            <label for="message">Votre message :</label>
+                            <textarea id="message" name="message" required rows="6" cols="50"></textarea>
+                            
+                            <button type="submit" id="envoiAvis" name="envoiAvis">Poster votre message</button>
+                        </form>
+                    </div>
+                </div>
+
+                <?php
+                // Vérifier si le formulaire d'avis a été soumis
+                if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['envoiAvis'])) {
+                    // Récupérer les données du formulaire sans vérifier si elles sont vides
+                    $pseudo = htmlspecialchars($_POST['pseudo']);
+                    $message = htmlspecialchars($_POST['message']);
+
+                    // Préparer l'insertion dans la base de données
+                    $insertion = $pdo->prepare('INSERT INTO messages (pseudo, message) VALUES (?, ?)');
+                    $insertion->execute(array($pseudo, $message));
+
+                    echo "<p>Avis ajouté avec succès !</p>";
+                }
+
+                // Récupérer les avis validés pour les afficher sur la page d'accueil
+                $requeteAvisValides = $pdo->prepare('SELECT * FROM messagesvalides');
+                $requeteAvisValides->execute();
+                $avisValides = $requeteAvisValides->fetchAll(PDO::FETCH_ASSOC);
+                ?>
+
+                <div id="avisVisiteur">
+                    <h2>Avis des Visiteurs</h2>
+                    <table id="avisTable">
+                        <thead>
+                            <tr>
+                                <th>Pseudonyme</th>
+                                <th>Message</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($avisValides as $avisValide): ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($avisValide['pseudo']); ?></td>
+                                    <td><?= htmlspecialchars($avisValide['message']); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </section>
     </main>
+            <!-- Script Js affichage du menu Navigation -->
+            <script src="/Script/Js/script.js"></script>
 </body>
 </html>
