@@ -43,7 +43,6 @@ if (isset($_GET['supprimer'])) {
     $id = intval($_GET['supprimer']);
     $suppression = $pdo->prepare('DELETE FROM messages WHERE id = ?');
     $suppression->execute(array($id));
-    echo "<p>Avis supprimé avec succès !</p>";
 }
 
 // Validation d'un avis
@@ -62,8 +61,6 @@ if (isset($_GET['valider'])) {
         // Supprimer l'avis de la table messages
         $suppression = $pdo->prepare('DELETE FROM messages WHERE id = ?');
         $suppression->execute(array($id));
-
-        echo "<p>Avis validé avec succès et ajouté à la table des messages validés !</p>";
     }
 }
 
