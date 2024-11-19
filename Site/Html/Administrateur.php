@@ -505,7 +505,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 if ($stmt->execute([$nom, $espace, $age, $etatDeSante, $animauxHabitat, $image])) {
                     echo "<script type='text/javascript'>
-                    alert('Animal ajouté avec succès !');
+                    alert('Animal Ajouté avec succès !');
                     window.location.href = 'Administrateur.php'; // Redirige vers la page après la suppression
                     </script>";
                 } else {
@@ -537,6 +537,62 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 echo "Erreur : " . $deleteAnimal->errorInfo()[2];
             }
+        } else {
+            echo "Erreur : L'animal spécifié n'existe pas.";
+        }
+    }
+
+    // Modifier un animal
+    if (isset($_POST['modifier_animal'])) {
+        if (
+            !empty($_POST['animal_id']) &&
+            !empty($_POST['nom']) &&
+            !empty($_POST['espace']) &&
+            !empty($_POST['age']) &&
+            !empty($_POST['etatDeSante']) &&
+            !empty($_POST['animauxHabitat'])
+        ) {
+            $animalId = (int)$_POST['animal_id'];
+            $nom = htmlspecialchars($_POST['nom']);
+            $espace = htmlspecialchars($_POST['espace']);
+            $age = (int)$_POST['age'];
+            $etatDeSante = htmlspecialchars($_POST['etatDeSante']);
+            $animauxHabitat = (int)$_POST['animauxHabitat'];
+            $image = null;
+
+            if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+                $image = file_get_contents($_FILES['image']['tmp_name']);
+            }
+
+            // Vérifier si l'animal existe avant de le modifier
+            $checkAnimal = $pdo->prepare("SELECT pidAnimal FROM animaux WHERE pidAnimal = ?");
+            $checkAnimal->execute([$animalId]);
+
+            if ($checkAnimal->rowCount() > 0) {
+                // Requête de mise à jour pour modifier un animal
+                if ($image) {
+                    $requete = "UPDATE animaux SET nom = ?, espace = ?, age = ?, etatDeSante = ?, animauxHabitat = ?, image = ? WHERE pidAnimal = ?";
+                    $stmt = $pdo->prepare($requete);
+                    $params = [$nom, $espace, $age, $etatDeSante, $animauxHabitat, $image, $animalId];
+                } else {
+                    $requete = "UPDATE animaux SET nom = ?, espace = ?, age = ?, etatDeSante = ?, animauxHabitat = ? WHERE pidAnimal = ?";
+                    $stmt = $pdo->prepare($requete);
+                    $params = [$nom, $espace, $age, $etatDeSante, $animauxHabitat, $animalId];
+                }
+
+                if ($stmt->execute($params)) {
+                    echo "<script type='text/javascript'>
+                    alert('Animal modifié avec succès !');
+                    window.location.href = 'Administrateur.php'; // Redirige vers la page après la suppression
+                    </script>";
+                } else {
+                    echo "Erreur : " . $stmt->errorInfo()[2];
+                }
+            } else {
+                echo "Erreur : L'animal spécifié n'existe pas.";
+            }
+        } else {
+            echo "Veuillez remplir tous les champs requis.";
         }
     }
     ?>
@@ -570,11 +626,61 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </select>
     </td>
 </tr>
+            <tr>
                 <td><label for="image">Image de l'animal :</label></td>
                 <td><input type="file" name="image" id="image" required></td>
             </tr>
             <tr>
                 <td colspan="2"><button type="submit" name="ajouter_animal">Ajouter un animal</button></td>
+            </tr>
+        </table>
+    </form>
+
+    <h2>Modifier un animal</h2>
+    <form action="" method="POST" enctype="multipart/form-data">
+        <table>
+            <tr>
+                <td><label for="animal_id">Choisir un animal :</label></td>
+                <td>
+                    <select name="animal_id" id="animal_id" required>
+                        <?php foreach ($animaux_table as $animal) { ?>
+                            <option value="<?= $animal['pidAnimal'] ?>"><?= htmlspecialchars($animal['nom']) ?></option>
+                        <?php } ?>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="nom">Nom de l'animal :</label></td>
+                <td><input type="text" name="nom" id="nom" required></td>
+            </tr>
+            <tr>
+                <td><label for="espace">Espace :</label></td>
+                <td><input type="text" name="espace" id="espace" required></td>
+            </tr>
+            <tr>
+                <td><label for="age">Âge :</label></td>
+                <td><input type="number" name="age" id="age" required></td>
+            </tr>
+            <tr>
+                <td><label for="etatDeSante">État de santé :</label></td>
+                <td><input type="text" name="etatDeSante" id="etatDeSante" required></td>
+            </tr>
+            <tr>
+                <td><label for="animauxHabitat">Habitat :</label></td>
+                <td>
+                    <select name="animauxHabitat" id="animauxHabitat" required>
+                        <?php foreach ($habitat_table as $habitat) { ?>
+                            <option value="<?= $habitat['pidHabitat'] ?>"><?= htmlspecialchars($habitat['nom']) ?></option>
+                        <?php } ?>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="image">Image de l'animal (optionnelle) :</label></td>
+                <td><input type="file" name="image" id="image"></td>
+            </tr>
+            <tr>
+                <td colspan="2"><button type="submit" name="modifier_animal">Modifier l'animal</button></td>
             </tr>
         </table>
     </form>
