@@ -1,9 +1,17 @@
 <?php
-// Connexion à la base de données MySQL
-$host = 'localhost';
-$dbname = 'base_test_connectivite';
-$username = 'root';
-$password = '';
+// Informations de connexion à la base de données MySQL
+$host = '127.0.0.1'; // Vous pouvez aussi utiliser 'localhost' à la place de '127.0.0.1'
+$dbname = 'u386540360_4rcadiaAdmin';
+$username = 'root'; // Utilisateur de la base de données
+$password = ''; // Mot de passe associé
+
+try {
+    // Connexion à MySQL avec PDO
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Erreur de connexion à la base de données : " . $e->getMessage());
+}
 
 //Connexion à la session
 session_start();
@@ -12,25 +20,53 @@ $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
 // Initialisation de la variable $utilisateur
 $utilisateur = null;
 
-if(isset($_POST['envoi'])){
-    if(!empty($_POST['email']) AND !empty($_POST['motDePasse'])){
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['envoi'])) {
+    if (!empty($_POST['email']) && !empty($_POST['motDePasse'])) {
         $email = htmlspecialchars($_POST['email']);
         $motDePasse = htmlspecialchars($_POST['motDePasse']);
 
-        $utilisateur = $pdo->prepare('SELECT * FROM utilisateur WHERE email = ? AND motDePasse = ?');
-        $utilisateur->execute(array($email, $motDePasse));
+        // Préparer la requête pour récupérer l'utilisateur correspondant à l'email donné
+        $utilisateur = $pdo->prepare('SELECT * FROM utilisateur WHERE email = ?');
+        $utilisateur->execute([$email]);
 
-        if($utilisateur->rowCount() > 0){
-            $userInfo = $utilisateur->fetch();
-            $_SESSION['email'] = $email;
-            $_SESSION['motDePasse'] = $motDePasse;
-            $_SESSION['roleUtilisateur'] = $userInfo['roleUtilisateur'];
+        // Vérifier si l'utilisateur existe
+        if ($utilisateur->rowCount() > 0) {
+            // Récupérer les informations de l'utilisateur
+            $userInfo = $utilisateur->fetch(PDO::FETCH_ASSOC);
+
+            // Vérifier si le mot de passe fourni correspond au mot de passe haché en base de données
+            if (password_verify($motDePasse, $userInfo['motDePasse'])) {
+                // Si le mot de passe est correct, démarrer la session utilisateur
+                $_SESSION['email'] = $email;
+                $_SESSION['roleUtilisateur'] = $userInfo['roleUtilisateur'];
+            } else {
+                echo "<script>alert('Mot de passe incorrect.');</script>";
+            }
+        } else {
+            echo "<script>alert('Utilisateur non trouvé.');</script>";
         }
+    } else {
+        echo "<script>alert('Veuillez remplir tous les champs.');</script>";
     }
-
-    }
+}
     // Vérification de la connexion dans le reste du code
 $isUserConnected = isset($_SESSION['email']);
+
+try {
+    // Connexion à MongoDB Atlas sans utiliser Composer avec des options simplifiées
+    $uri = "mongodb+srv://twobrochcorp:OYe4FL8B4VF7DkAp@cluster0.bvu0w.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+    $uriOptions = [
+        'tlsAllowInvalidCertificates' => true, // Ignorer les erreurs de certificat (à n'utiliser que pour tester)
+    ];
+
+    $manager = new MongoDB\Driver\Manager($uri, $uriOptions);
+    
+    // Envoi d'une commande ping pour vérifier la connexion
+    $command = new MongoDB\Driver\Command(['ping' => 1]);
+    $cursor = $manager->executeCommand('admin', $command);
+} catch (MongoDB\Driver\Exception\Exception $e) {
+    echo "Erreur lors de la connexion à MongoDB Atlas : " . $e->getMessage();
+}
 ?>
 
 <!DOCTYPE html>
@@ -69,11 +105,11 @@ $isUserConnected = isset($_SESSION['email']);
                         <li><a href="/Site/Html/contact.php">Contact</a></li>
                         <?php 
                             // Vérifier si l'utilisateur est connecté et s'il a le rôle "Veterinaire"
-                            if (isset($_SESSION['email']) && isset($_SESSION['roleUtilisateur']) && ($_SESSION['roleUtilisateur'] == "Veterinaire"|| $_SESSION['roleUtilisateur'] == "Admin")) {
+                            if (isset($_SESSION['email']) && isset($_SESSION['roleUtilisateur']) && ($_SESSION['roleUtilisateur'] == "Veterinaire")) {
                                 // L'utilisateur est connecté en tant que vétérinaire, on affiche son espace
                                 echo '<li><a href="/Site/Html/Veterinaire.php">Espace Veto</a></li>';
                             }
-                            if (isset($_SESSION['email']) && isset($_SESSION['roleUtilisateur']) && ($_SESSION['roleUtilisateur'] == "Employe"|| $_SESSION['roleUtilisateur'] == "Admin")) {
+                            if (isset($_SESSION['email']) && isset($_SESSION['roleUtilisateur']) && ($_SESSION['roleUtilisateur'] == "Employe")) {
                                 // L'utilisateur est connecté en tant qu'employé, on affiche son espace
                                 echo '<li><a href="/Site/Html/Employe.php">Espace Employé</a></li>';
                             } 
@@ -125,31 +161,10 @@ $isUserConnected = isset($_SESSION['email']);
 
     <!-- Les différentes Sections de la page d'acceuil -->
     <main>  
-        <p><?php
-// Vérifier que l'extension MongoDB est activée
-if (extension_loaded("mongodb")) {
-    echo "<p>Extension MongoDB est activée.</p>";
 
-    // Connexion à MongoDB
-    try {
-        $manager = new MongoDB\Driver\Manager("mongodb://localhost:27017");
 
-        // Créer un document pour insertion
-        $bulk = new MongoDB\Driver\BulkWrite;
-        $document = ['_id' => new MongoDB\BSON\ObjectID, 'name' => 'Test User', 'email' => 'test@example.com'];
-        $bulk->insert($document);
 
-        // Exécuter l'insertion
-        $manager->executeBulkWrite('test_database.test_collection', $bulk);
 
-        echo "<p>Document inséré avec succès dans MongoDB.</p>";
-    } catch (MongoDB\Driver\Exception\Exception $e) {
-        echo "<p>Erreur lors de la connexion ou de l'insertion dans MongoDB : " . $e->getMessage() . "</p>";
-    }
-} else {
-    echo "<p>Extension MongoDB n'est pas activée. Vérifiez la configuration de PHP.</p>";
-}
-?></p>
 
         <!-- Section à propos -->
         <section id="Section_APropos">
@@ -272,4 +287,5 @@ if (extension_loaded("mongodb")) {
             <!-- Script Js affichage du menu Navigation -->
             <script src="/Script/Js/script.js"></script>
 </body>
+
 </html>

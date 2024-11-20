@@ -1,9 +1,17 @@
 <?php
-// Connexion à la base de données MySQL
-$host = 'localhost';
-$dbname = 'base_test_connectivite';
-$username = 'root';
-$password = '';
+// Informations de connexion à la base de données MySQL
+$host = '127.0.0.1'; // Vous pouvez aussi utiliser 'localhost' à la place de '127.0.0.1'
+$dbname = 'u386540360_4rcadiaAdmin';
+$username = 'root'; // Utilisateur de la base de données
+$password = ''; // Mot de passe associé
+
+try {
+    // Connexion à MySQL avec PDO
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Erreur de connexion à la base de données : " . $e->getMessage());
+}
 
 // Connexion à la session
 session_start();
@@ -13,9 +21,6 @@ try {
 } catch (PDOException $e) {
     die('Erreur : ' . $e->getMessage());
 }
-
-// Augmenter la taille maximale des paquets
-$pdo->exec("SET GLOBAL max_allowed_packet = 64 * 1024 * 1024;");
 
 // Initialisation de la variable $utilisateur
 $utilisateur = null;
@@ -51,6 +56,23 @@ $utilisateur_table = getTableData($pdo, 'utilisateur');
 $service_table = getTableData($pdo, 'service');
 $animaux_table = getTableData($pdo, 'animaux');
 $habitat_table = getTableData($pdo, 'habitat');
+
+try {
+    // Connexion à MongoDB Atlas sans utiliser Composer avec des options simplifiées
+    $uri = "mongodb+srv://twobrochcorp:OYe4FL8B4VF7DkAp@cluster0.bvu0w.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+    $uriOptions = [
+        'tlsAllowInvalidCertificates' => true, // Ignorer les erreurs de certificat (à n'utiliser que pour tester)
+    ];
+
+    $manager = new MongoDB\Driver\Manager($uri, $uriOptions);
+    
+    // Envoi d'une commande ping pour vérifier la connexion
+    $command = new MongoDB\Driver\Command(['ping' => 1]);
+    $cursor = $manager->executeCommand('admin', $command);
+} catch (MongoDB\Driver\Exception\Exception $e) {
+    echo "Erreur lors de la connexion à MongoDB Atlas : " . $e->getMessage();
+}
+
 
 ?>
 
@@ -90,14 +112,14 @@ $habitat_table = getTableData($pdo, 'habitat');
                         <li><a href="/Site/Html/contact.php">Contact</a></li>
                         <?php 
                             // Vérifier si l'utilisateur est connecté et s'il a le rôle "Veterinaire" ou "Admin"
-                            if (isset($_SESSION['email']) && isset($_SESSION['roleUtilisateur']) && ($_SESSION['roleUtilisateur'] == "Veterinaire" || $_SESSION['roleUtilisateur'] == "Admin")) {
+                            if (isset($_SESSION['email']) && isset($_SESSION['roleUtilisateur']) && ($_SESSION['roleUtilisateur'] == "Veterinaire")) {
                                 echo '<li><a href="/Site/Html/Veterinaire.php">Espace Veto</a></li>';
                             }
-                            if (isset($_SESSION['email']) && isset($_SESSION['roleUtilisateur']) && ($_SESSION['roleUtilisateur'] == "Employe" || $_SESSION['roleUtilisateur'] == "Admin")) {
-                                echo '<li>Espace Employé</li>';
+                            if (isset($_SESSION['email']) && isset($_SESSION['roleUtilisateur']) && ($_SESSION['roleUtilisateur'] == "Employe")) {
+                                echo '<li><a href="/Site/Html/Employe.php">Espace Employé</a></li>';
                             } 
                             if (isset($_SESSION['email']) && isset($_SESSION['roleUtilisateur']) && $_SESSION['roleUtilisateur'] == "Admin") {
-                                echo '<li class="page_navigante"><a href="/Site/Html/Administrateur.php">Espace Administrateur</a></li>';
+                                echo '<li class="page_navigante">Espace Administrateur</li>';
                             } 
                         ?>
                     </ul>
@@ -143,7 +165,7 @@ $habitat_table = getTableData($pdo, 'habitat');
 
 <?php include 'afficher_compteur.php'; ?>
 
-    <!--Fonction Création Utilisateur-->
+<!--Fonction Création Utilisateur-->
     <section id="creation-utilisateur">
         <h2>Création d'un nouvel utilisateur</h2>
         <form action="Administrateur.php" method="POST">
@@ -159,6 +181,10 @@ $habitat_table = getTableData($pdo, 'habitat');
                 <tr>
                     <td><label for="nouveauEmail">Email :</label></td>
                     <td><input type="email" id="nouveauEmail" name="nouveauEmail" required autocomplete="off"></td>
+                </tr>
+                <tr>
+                    <td><label for="motDePasse">Mot de passe :</label></td>
+                    <td><input type="password" id="motDePasse" name="motDePasse" required></td>
                 </tr>
                 <tr>
                     <td><label for="roleUtilisateur">Rôle :</label></td>
@@ -188,23 +214,157 @@ $habitat_table = getTableData($pdo, 'habitat');
     <?php
     // Fonctionnalité de création d'utilisateur
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['creerUtilisateur'])) {
-        if (!empty($_POST['nom']) && !empty($_POST['prenom']) && !empty($_POST['nouveauEmail']) && !empty($_POST['roleUtilisateur']) && !empty($_POST['statut'])) {
+        if (!empty($_POST['nom']) && !empty($_POST['prenom']) && !empty($_POST['nouveauEmail']) && !empty($_POST['motDePasse']) && !empty($_POST['roleUtilisateur']) && !empty($_POST['statut'])) {
             $nom = htmlspecialchars($_POST['nom']);
             $prenom = htmlspecialchars($_POST['prenom']);
             $nouveauEmail = htmlspecialchars($_POST['nouveauEmail']);
+            $motDePasse = password_hash(htmlspecialchars($_POST['motDePasse']), PASSWORD_DEFAULT);
             $roleUtilisateur = htmlspecialchars($_POST['roleUtilisateur']);
             $statut = htmlspecialchars($_POST['statut']);
 
             // Insertion dans la table utilisateur
             $insertionUtilisateur = $pdo->prepare('INSERT INTO utilisateur (nom, prenom, roleUtilisateur, email, motDePasse, statut) VALUES (?, ?, ?, ?, ?, ?)');
-            if ($insertionUtilisateur->execute(array($nom, $prenom, $roleUtilisateur, $nouveauEmail, '', $statut))) {
-                echo "<p>Utilisateur créé avec succès ! L'utilisateur doit contacter l'administrateur pour obtenir son mot de passe.</p>";
+            if ($insertionUtilisateur->execute(array($nom, $prenom, $roleUtilisateur, $nouveauEmail, $motDePasse, $statut))) {
+
+                // Envoi de l'email au nouvel utilisateur
+                $to = $nouveauEmail;
+                $subject = "Bienvenue dans l'équipe d'Arcadia";
+                $message = "Bonjour $prenom $nom,\n\nVotre compte a été créé avec succès. Vous pouvez maintenant vous rapprocher de l'administrateur pour connaître votre mot de passe.\n\nMerci de votre confiance,\nL'équipe d'Arcadia.";
+                $headers = "From: contact@dbarcadia.site\r\n";
+                $headers .= "Reply-To: contact@dbarcadia.site\r\n";
+
+                if (mail($to, $subject, $message, $headers)) {
+                    echo "<script type='text/javascript'>window.location.href='Administrateur.php';</script>";
+                } else {
+                    echo "<p>Erreur lors de l'envoi de l'email à l'utilisateur.</p>";
+                }
             } else {
                 echo "<p>Erreur lors de la création de l'utilisateur.</p>";
             }
         }
     }
     ?>
+    
+<!--Fonction Modification Utilisateur-->
+<section id="modification-utilisateur">
+    <h2>Modification d'un utilisateur</h2>
+    <form action="Administrateur.php" method="POST">
+        <table>
+            <tr>
+                <td><label for="utilisateurSelection">Sélectionnez un utilisateur :</label></td>
+                <td>
+                    <select id="utilisateurSelection" name="utilisateurSelection" required>
+                        <option value="" selected>Sélectionnez un utilisateur</option>
+                        <?php foreach ($utilisateur_table as $utilisateur): ?>
+                            <?php if ($utilisateur['roleUtilisateur'] != 'Admin'): ?>
+                                <option value="<?php echo htmlspecialchars($utilisateur['pidUtilisateur'], ENT_QUOTES, 'UTF-8'); ?>">
+                                    <?php echo htmlspecialchars($utilisateur['nom'] . ' ' . $utilisateur['prenom'] . ' (' . $utilisateur['email'] . ')', ENT_QUOTES, 'UTF-8'); ?>
+                                </option>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="nom">Nom :</label></td>
+                <td><input type="text" id="nom" name="nom" ></td>
+            </tr>
+            <tr>
+                <td><label for="prenom">Prénom :</label></td>
+                <td><input type="text" id="prenom" name="prenom" ></td>
+            </tr>
+            <tr>
+                <td><label for="nouveauEmail">Email :</label></td>
+                <td><input type="email" id="nouveauEmail" name="nouveauEmail"  autocomplete="off"></td>
+            </tr>
+            <tr>
+                <td><label for="roleUtilisateur">Rôle :</label></td>
+                <td>
+                    <select id="roleUtilisateur" name="roleUtilisateur" >
+                        <option value="Veterinaire">Veterinaire</option>
+                        <option value="Employe">Employe</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="statut">Statut :</label></td>
+                <td>
+                    <select id="statut" name="statut" >
+                        <option value="actif">Actif</option>
+                        <option value="inactif">Inactif</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button type="submit" name="modifierUtilisateur">Modifier Utilisateur</button>
+                    <button type="submit" name="supprimerUtilisateur" onclick="return confirm('Voulez-vous vraiment supprimer cet utilisateur ?');">Supprimer Utilisateur</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</section>
+
+<?php
+// Fonctionnalité de modification d'utilisateur
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modifierUtilisateur'])) {
+    if (!empty($_POST['utilisateurSelection'])) {
+        $pidUtilisateur = htmlspecialchars($_POST['utilisateurSelection']);
+        $nom = !empty($_POST['nom']) ? htmlspecialchars($_POST['nom']) : null;
+        $prenom = !empty($_POST['prenom']) ? htmlspecialchars($_POST['prenom']) : null;
+        $nouveauEmail = !empty($_POST['nouveauEmail']) ? htmlspecialchars($_POST['nouveauEmail']) : null;
+        $roleUtilisateur = !empty($_POST['roleUtilisateur']) ? htmlspecialchars($_POST['roleUtilisateur']) : null;
+        $statut = !empty($_POST['statut']) ? htmlspecialchars($_POST['statut']) : null;
+
+        $fieldsToUpdate = [];
+        $valuesToUpdate = [];
+
+        if ($nom !== null) {
+            $fieldsToUpdate[] = 'nom = ?';
+            $valuesToUpdate[] = $nom;
+        }
+        if ($prenom !== null) {
+            $fieldsToUpdate[] = 'prenom = ?';
+            $valuesToUpdate[] = $prenom;
+        }
+        if ($nouveauEmail !== null) {
+            $fieldsToUpdate[] = 'email = ?';
+            $valuesToUpdate[] = $nouveauEmail;
+        }
+        if ($roleUtilisateur !== null) {
+            $fieldsToUpdate[] = 'roleUtilisateur = ?';
+            $valuesToUpdate[] = $roleUtilisateur;
+        }
+        if ($statut !== null) {
+            $fieldsToUpdate[] = 'statut = ?';
+            $valuesToUpdate[] = $statut;
+        }
+
+        if (!empty($fieldsToUpdate)) {
+            $valuesToUpdate[] = $pidUtilisateur;
+            $updateQuery = 'UPDATE utilisateur SET ' . implode(', ', $fieldsToUpdate) . ' WHERE pidUtilisateur = ?';
+            $updateUtilisateur = $pdo->prepare($updateQuery);
+
+            $updateUtilisateur->execute($valuesToUpdate);
+        }
+    }
+}
+
+// Fonctionnalité de suppression d'utilisateur
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['supprimerUtilisateur'])) {
+    if (!empty($_POST['utilisateurSelection'])) {
+        $pidUtilisateur = htmlspecialchars($_POST['utilisateurSelection']);
+        $deleteQuery = 'DELETE FROM utilisateur WHERE pidUtilisateur = ?';
+        $deleteUtilisateur = $pdo->prepare($deleteQuery);
+        $deleteUtilisateur->execute([$pidUtilisateur]);
+        echo "<script type='text/javascript'>window.location.href='Administrateur.php';</script>";
+    }
+}
+?>
+
+
+
+
 
 <!--Fonction Modification Service-->
 <section id="modification-service">
@@ -708,12 +868,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </form>
 </main>
 
-
-    <!--Fonction Compte rendu véto-->
-    <!--Fonction Click Animal-->
-    
 </main>
             <!-- Script Js affichage du menu Navigation -->
             <script src="/Script/Js/script.js"></script>
+            
 </body>
 </html>

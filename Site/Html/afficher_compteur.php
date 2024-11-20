@@ -1,10 +1,18 @@
 <?php
-// Connexion à la base de données MySQL
-$host = 'localhost';
-$dbname = 'base_test_connectivite';
-$username = 'root';
-$password = '';
+// Informations de connexion à la base de données MySQL
+$host = '127.0.0.1'; // Vous pouvez aussi utiliser 'localhost' à la place de '127.0.0.1'
+$dbname = 'u386540360_4rcadiaAdmin';
+$username = 'root'; // Utilisateur de la base de données
+$password = ''; // Mot de passe associé
 
+try {
+    // Connexion à MySQL avec PDO
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    echo "Connexion réussie à la base de données.";
+} catch (PDOException $e) {
+    die("Erreur de connexion à la base de données : " . $e->getMessage());
+}
 try {
     // Connexion à MySQL
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
@@ -23,7 +31,8 @@ try {
 $clics = [];
 if (extension_loaded("mongodb")) {
     try {
-        $manager = new MongoDB\Driver\Manager("mongodb://localhost:27017");
+        // Connexion à MongoDB Atlas avec les informations de connexion distantes
+        $manager = new MongoDB\Driver\Manager("mongodb+srv://twobrochcorp:OYe4FL8B4VF7DkAp@cluster0.bvu0w.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
 
         // Créer une requête pour récupérer tous les compteurs de clics des animaux
         $query = new MongoDB\Driver\Query([]);

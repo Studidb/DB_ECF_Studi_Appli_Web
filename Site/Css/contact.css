@@ -22,6 +22,12 @@
 #Section_Contact form {
     display: flex;
     flex-direction: column;
+    gap: 10px;
+}
+
+#Section_Contact .form-group {
+    display: flex;
+    flex-direction: column;
 }
 
 #Section_Contact label {
@@ -32,10 +38,10 @@
 #Section_Contact input,
 #Section_Contact textarea {
     padding: 10px;
-    margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 16px;
+    width: 100%;
 }
 
 #Section_Contact button {
@@ -43,7 +49,7 @@
     background-color: #32CD32;
     color: white;
     border: 2px solid #FFD700;
-    border-radius: 1cap;
+    border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
 }

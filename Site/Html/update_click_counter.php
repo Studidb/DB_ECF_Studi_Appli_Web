@@ -3,10 +3,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['animal_id'])) {
         $animalId = $_POST['animal_id'];
 
-        // Connexion à MongoDB
+        // Connexion à MongoDB Atlas avec les informations de connexion distantes
         if (extension_loaded("mongodb")) {
             try {
-                $manager = new MongoDB\Driver\Manager("mongodb://localhost:27017");
+                $manager = new MongoDB\Driver\Manager("mongodb+srv://twobrochcorp:OYe4FL8B4VF7DkAp@cluster0.bvu0w.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
 
                 // Préparer la requête pour mettre à jour le compteur de clics
                 $bulk = new MongoDB\Driver\BulkWrite;

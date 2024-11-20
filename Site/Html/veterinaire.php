@@ -1,18 +1,77 @@
 <?php
-// Connexion à la base de données MySQL
-$host = 'localhost';
-$dbname = 'base_test_connectivite';
-$username = 'root';
-$password = '';
+// Informations de connexion à la base de données MySQL
+$host = '127.0.0.1'; // Vous pouvez aussi utiliser 'localhost' à la place de '127.0.0.1'
+$dbname = 'u386540360_4rcadiaAdmin';
+$username = 'root'; // Utilisateur de la base de données
+$password = ''; // Mot de passe associé
 
-// Connexion à la session
-session_start();
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+    // Connexion à MySQL avec PDO
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-    die('Erreur : ' . $e->getMessage());
+    die("Erreur de connexion à la base de données : " . $e->getMessage());
 }
+
+//Connexion à la session
+session_start();
+$pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+
+// Initialisation de la variable $utilisateur
+$utilisateur = null;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['envoi'])) {
+    if (!empty($_POST['email']) && !empty($_POST['motDePasse'])) {
+        $email = htmlspecialchars($_POST['email']);
+        $motDePasse = htmlspecialchars($_POST['motDePasse']);
+
+        // Préparer la requête pour récupérer l'utilisateur correspondant à l'email donné
+        $utilisateur = $pdo->prepare('SELECT * FROM utilisateur WHERE email = ?');
+        $utilisateur->execute([$email]);
+
+        // Vérifier si l'utilisateur existe
+        if ($utilisateur->rowCount() > 0) {
+            // Récupérer les informations de l'utilisateur
+            $userInfo = $utilisateur->fetch(PDO::FETCH_ASSOC);
+
+            // Vérifier si le mot de passe fourni correspond au mot de passe haché en base de données
+            if (password_verify($motDePasse, $userInfo['motDePasse'])) {
+                // Si le mot de passe est correct, démarrer la session utilisateur
+                $_SESSION['email'] = $email;
+                $_SESSION['roleUtilisateur'] = $userInfo['roleUtilisateur'];
+            } else {
+                echo "<script>alert('Mot de passe incorrect.');</script>";
+            }
+        } else {
+            echo "<script>alert('Utilisateur non trouvé.');</script>";
+        }
+    } else {
+        echo "<script>alert('Veuillez remplir tous les champs.');</script>";
+    }
+}
+    // Vérification de la connexion dans le reste du code
+$isUserConnected = isset($_SESSION['email']);
+
+//Chargement des tables et mise en variable
+$stmt = $pdo->prepare('SELECT * FROM habitat');
+$stmt->execute();
+$habitat_table = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$stmt = $pdo->prepare('SELECT * FROM animaux');
+$stmt->execute();
+$animaux_table = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$stmt = $pdo->prepare('SELECT * FROM rapportveterinaire');
+$stmt->execute();
+$rapportveterinaire_table = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$stmt = $pdo->prepare('SELECT * FROM nourriture');
+$stmt->execute();
+$nourriture_table = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$stmt = $pdo->prepare('SELECT * FROM service');
+$stmt->execute();
+$service_table = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Initialisation de la variable $utilisateur
 $utilisateur = null;
@@ -34,23 +93,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['envoi'])) {
         }
     }
 }
-
-//Chargement des tables et mise en variable
-$stmt = $pdo->prepare('SELECT * FROM habitat');
-$stmt->execute();
-$habitat_table = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-$stmt = $pdo->prepare('SELECT * FROM animaux');
-$stmt->execute();
-$animaux_table = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-$stmt = $pdo->prepare('SELECT * FROM rapportveterinaire');
-$stmt->execute();
-$rapportveterinaire_table = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-$stmt = $pdo->prepare('SELECT * FROM nourriture');
-$stmt->execute();
-$nourriture_table = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Vérification de la connexion dans le reste du code
 $isUserConnected = isset($_SESSION['email']);
@@ -91,14 +133,17 @@ $isUserConnected = isset($_SESSION['email']);
                         <li><a href="/Site/Html/habitats.php">Habitats</a></li>
                         <li><a href="/Site/Html/contact.php">Contact</a></li>
                         <?php 
-                            // Vérifier si l'utilisateur est connecté et s'il a le rôle "Veterinaire" ou "Admin"
-                            if (isset($_SESSION['email']) && isset($_SESSION['roleUtilisateur']) && ($_SESSION['roleUtilisateur'] == "Veterinaire" || $_SESSION['roleUtilisateur'] == "Admin")) {
-                                echo '<li class="page_navigante"><a href="/Site/Html/Veterinaire.php">Espace Veto</a></li>';
+                            // Vérifier si l'utilisateur est connecté et s'il a le rôle "Veterinaire"
+                            if (isset($_SESSION['email']) && isset($_SESSION['roleUtilisateur']) && ($_SESSION['roleUtilisateur'] == "Veterinaire"|| $_SESSION['roleUtilisateur'] == "Admin")) {
+                                // L'utilisateur est connecté en tant que vétérinaire, on affiche son espace
+                                echo '<li class="page_navigante">Espace Veto</li>';
                             }
-                            if (isset($_SESSION['email']) && isset($_SESSION['roleUtilisateur']) && ($_SESSION['roleUtilisateur'] == "Employe" || $_SESSION['roleUtilisateur'] == "Admin")) {
-                                echo '<li>Espace Employé</li>';
+                            if (isset($_SESSION['email']) && isset($_SESSION['roleUtilisateur']) && ($_SESSION['roleUtilisateur'] == "Employe"|| $_SESSION['roleUtilisateur'] == "Admin")) {
+                                // L'utilisateur est connecté en tant qu'employé, on affiche son espace
+                                echo '<li><a href="/Site/Html/Employe.php">Espace Employé</a></li>';
                             } 
                             if (isset($_SESSION['email']) && isset($_SESSION['roleUtilisateur']) && $_SESSION['roleUtilisateur'] == "Admin") {
+                                // L'utilisateur est connecté en tant qu'administrateur, on affiche son espace
                                 echo '<li><a href="/Site/Html/Administrateur.php">Espace Administrateur</a></li>';
                             } 
                         ?>
@@ -107,8 +152,10 @@ $isUserConnected = isset($_SESSION['email']);
                     <?php 
                         // Vérifier si l'utilisateur est connecté en utilisant la session
                         if (isset($_SESSION['email'])) {
+                            // L'utilisateur est connecté, on affiche un bouton de déconnexion
                             echo '<button id="Connexion" onclick="deconnexion()">Déconnexion</button>';
                         } else {
+                            // L'utilisateur n'est pas connecté, on affiche le bouton de connexion
                             echo '<li><button id="Connexion" onclick="ouvrirPopup()">Connexion</button></li>';
                         }
                     ?>
@@ -164,60 +211,40 @@ $isUserConnected = isset($_SESSION['email']);
         
         <fieldset>
             <legend>Rapport Vétérinaire</legend>
-            <label for="rapportVeterinaireAnimal">ID de l'animal :</label>
-            <input type="number" name="rapportVeterinaireAnimal" id="rapportVeterinaireAnimal" readonly>
+            <label for="rapportVeterinaireAnimal"></label>
+            <input type="number" name="rapportVeterinaireAnimal" id="rapportVeterinaireAnimal" readonly hidden>
             
             <label for="jour">Jour (Date) :</label>
-            <input type="date" name="jour" id="jour" required>
+            <input type="date" name="jour" id="jour">
 
             <label for="observation">Observation :</label>
-            <textarea name="observation" id="observation" rows="4" required></textarea>
+            <textarea name="observation" id="observation" rows="4"></textarea>
         </fieldset>
         
         <fieldset>
             <legend>Nourriture</legend>
-            <label for="nourritureAnimal">ID de l'animal :</label>
-            <input type="number" name="nourritureAnimal" id="nourritureAnimal" readonly>
+            <label for="nourritureAnimal"></label>
+            <input type="number" name="nourritureAnimal" id="nourritureAnimal" readonly hidden>
 
             <label for="typeAlimentation">Type d'alimentation :</label>
-            <input type="text" name="typeAlimentation" id="typeAlimentation" maxlength="100" required>
+            <input type="text" name="typeAlimentation" id="typeAlimentation" maxlength="100">
 
             <label for="grammage">Grammage (en grammes) :</label>
-            <input type="number" step="0.01" name="grammage" id="grammage" required>
+            <input type="number" step="0.01" name="grammage" id="grammage">
 
             <label for="dateAlimentation">Date de l'alimentation :</label>
-            <input type="date" name="dateAlimentation" id="dateAlimentation" required>
+            <input type="date" name="dateAlimentation" id="dateAlimentation">
         </fieldset>
 
         <fieldset>
             <legend>État de Santé de l'Animal</legend>
             <label for="etatDeSante">État de Santé :</label>
-            <input type="text" name="etatDeSante" id="etatDeSante" maxlength="255" required>
-        </fieldset>
-
-        <fieldset>
-            <legend>Avis sur l'Habitat</legend>
-            <label for="habitat">Habitat :</label>
-            <select name="habitat" id="habitat" required>
-                <option value="">-- Sélectionnez un habitat --</option>
-                <?php if (!empty($habitat_table)): ?>
-                    <?php foreach ($habitat_table as $habitat): ?>
-                        <option value="<?= htmlspecialchars($habitat['pidHabitat']); ?>">
-                            <?= htmlspecialchars($habitat['nom']); ?>
-                        </option>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <option value="">Aucun habitat disponible</option>
-                <?php endif; ?>
-            </select>
-
-            <label for="avisHabitat">Avis sur l'Habitat :</label>
-            <textarea name="avisHabitat" id="avisHabitat" rows="4" required></textarea>
+            <input type="text" name="etatDeSante" id="etatDeSante" maxlength="255">
         </fieldset>
         
         <button type="submit" name="enregistrer">Enregistrer</button>
     </form>
-</main>
+
 
 <?php
 // Vérifier que le formulaire est soumis
@@ -231,8 +258,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enregistrer'])) {
     $grammage = $_POST['grammage'];
     $dateAlimentation = $_POST['dateAlimentation'];
     $etatDeSante = htmlspecialchars($_POST['etatDeSante']);
-    $habitat = $_POST['habitat'];
-    $avisHabitat = htmlspecialchars($_POST['avisHabitat']);
 
     try {
         // Vérifier l'existence du rapport vétérinaire
@@ -269,10 +294,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enregistrer'])) {
         $miseAJourEtat = $pdo->prepare("UPDATE animaux SET etatDeSante = ? WHERE pidAnimal = ?");
         $miseAJourEtat->execute([$etatDeSante, $rapportVeterinaireAnimal]);
 
-        // Mise à jour de l'avis sur l'habitat
-        $miseAJourAvisHabitat = $pdo->prepare("UPDATE habitat SET avisHabitat = ? WHERE pidHabitat = ?");
-        $miseAJourAvisHabitat->execute([$avisHabitat, $habitat]);
-
         echo "<p>Les données ont été mises à jour avec succès !</p>";
     } catch (PDOException $e) {
         echo "<p>Erreur : " . $e->getMessage() . "</p>";
@@ -280,15 +301,66 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enregistrer'])) {
 }
 ?>
 
-<script>
-    function remplirChampsId() {
-        const selectAnimal = document.getElementById('animal');
-        const animalId = selectAnimal.value;
-        
-        document.getElementById('rapportVeterinaireAnimal').value = animalId;
-        document.getElementById('nourritureAnimal').value = animalId;
+        <!-- Formulaire séparé pour l'avis sur l'habitat -->
+        <h1>Formulaire d'avis sur l'habitat</h1>
+        <form action="" method="POST">
+            <fieldset>
+                <legend>Avis sur l'Habitat</legend>
+                <label for="habitat">Habitat :</label>
+                <select name="habitat" id="habitat">
+                    <option value="">-- Sélectionnez un habitat --</option>
+                    <?php if (!empty($habitat_table)): ?>
+                        <?php foreach ($habitat_table as $habitat): ?>
+                            <option value="<?= htmlspecialchars($habitat['pidHabitat']); ?>">
+                                <?= htmlspecialchars($habitat['nom']); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <option value="">Aucun habitat disponible</option>
+                    <?php endif; ?>
+                </select>
+
+                <label for="avisHabitat">Avis sur l'Habitat :</label>
+                <textarea name="avisHabitat" id="avisHabitat" rows="4"></textarea>
+            </fieldset>
+            
+            <button type="submit" name="enregistrerAvis">Enregistrer Avis</button>
+        </form>
+    </main>
+
+    <?php
+
+    // Traitement du formulaire d'avis sur l'habitat
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enregistrerAvis'])) {
+        // Récupérer les valeurs des champs du formulaire d'avis sur l'habitat
+        $habitat = $_POST['habitat'];
+        $avisHabitat = htmlspecialchars($_POST['avisHabitat']);
+
+        try {
+            // Mise à jour de l'avis sur l'habitat
+            $miseAJourAvisHabitat = $pdo->prepare("UPDATE habitat SET avisHabitat = ? WHERE pidHabitat = ?");
+            $miseAJourAvisHabitat->execute([$avisHabitat, $habitat]);
+
+            echo "<p>L'avis sur l'habitat a été enregistré avec succès !</p>";
+        } catch (PDOException $e) {
+            echo "<p>Erreur : " . $e->getMessage() . "</p>";
+        }
     }
-</script>
+    ?>
+
+    <script>
+        function remplirChampsId() {
+            const selectAnimal = document.getElementById('animal');
+            const animalId = selectAnimal.value;
+            
+            document.getElementById('rapportVeterinaireAnimal').value = animalId;
+            document.getElementById('nourritureAnimal').value = animalId;
+        }
+        function deconnexion() {
+        // Redirige l'utilisateur vers deconnexion.php
+        window.location.href = '/Site/Html/deconnexion.php';
+        }
+    </script>
 
 </body>
 </html>
