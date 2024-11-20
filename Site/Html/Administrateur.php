@@ -140,6 +140,9 @@ $habitat_table = getTableData($pdo, 'habitat');
     </header>
 
 <main>  
+
+<?php include 'afficher_compteur.php'; ?>
+
     <!--Fonction Création Utilisateur-->
     <section id="creation-utilisateur">
         <h2>Création d'un nouvel utilisateur</h2>

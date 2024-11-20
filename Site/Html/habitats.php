@@ -49,6 +49,16 @@ $stmt = $pdo->prepare('SELECT * FROM rapportveterinaire');
 $stmt->execute();
 $rapportveterinaire_table = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+if (extension_loaded("mongodb")) {
+    try {
+        $manager = new MongoDB\Driver\Manager("mongodb://localhost:27017");
+        echo "Connexion réussie à MongoDB !";
+    } catch (MongoDB\Driver\Exception\Exception $e) {
+        die("Erreur lors de la connexion à MongoDB : " . $e->getMessage());
+    }
+} else {
+    die("Extension MongoDB non activée. Vérifiez la configuration de PHP.");
+}
 ?>
 
 <!DOCTYPE html>
@@ -165,7 +175,7 @@ $rapportveterinaire_table = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <div class="sectionDynamique" style="position: relative;">
                             <h1 class="sectionDynamique3"><?php echo htmlspecialchars($animal['nom']); ?></h1>
                             <hr>
-                            <img src="data:image/jpeg;base64,<?php echo base64_encode($animal['image']); ?>" alt="Image de l'animal <?php echo htmlspecialchars($animal['nom']); ?>" class="animal_image">
+                            <img src="data:image/jpeg;base64,<?php echo base64_encode($animal['image']); ?>" alt="Image de l'animal <?php echo htmlspecialchars($animal['nom']); ?>" class="animal_image" data-id="<?php echo htmlspecialchars($animal['pidAnimal']); ?>">
                             <div class="Cache TableauStyle">
                                 <table>
                                     <tr>
@@ -212,5 +222,34 @@ $rapportveterinaire_table = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <?php endforeach; ?>
 
 </main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Sélectionner toutes les images d'animaux
+        const animalImages = document.querySelectorAll('.animal_image');
+
+        // Ajouter un événement de clic à chaque image d'animal
+        animalImages.forEach(image => {
+            image.addEventListener('click', function () {
+                // Obtenir l'id de l'animal à partir de l'attribut data-id
+                const animalId = this.getAttribute('data-id');
+
+                // Envoi des données avec AJAX
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', 'update_click_counter.php', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.send('animal_id=' + encodeURIComponent(animalId));
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        console.log('Compteur de clics mis à jour pour l\'animal avec ID : ' + animalId);
+                    }
+                };
+            });
+        });
+    });
+</script>
+
+
 </body>
 </html>
