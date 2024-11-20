@@ -37,3 +37,51 @@
 p {
     text-align: justify;
 }
+
+/* Style des tableaux */
+.TableauStyle {
+position: absolute; 
+top: 10%; 
+left: 5%; 
+}
+
+table {
+    width: 100%;
+    margin: 20px 0;
+    font-size: 18px;
+    text-align: left;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.8); 
+    border: 2px solid #A0522D;
+    padding: 10px; 
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+
+td {
+    color: #333;
+}
+
+.animal_image {
+    object-fit: cover; /* Ajuste l'image pour remplir le cadre sans distorsion */
+    border-radius: 10px; /* Ajoute des coins arrondis pour un aspect plus moderne (optionnel) */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ajoute une ombre pour plus d'esthétique (optionnel) */
+}

@@ -239,8 +239,6 @@ if (extension_loaded("mongodb")) {
                     // Préparer l'insertion dans la base de données
                     $insertion = $pdo->prepare('INSERT INTO messages (pseudo, message) VALUES (?, ?)');
                     $insertion->execute(array($pseudo, $message));
-
-                    echo "<p>Avis ajouté avec succès !</p>";
                 }
 
                 // Récupérer les avis validés pour les afficher sur la page d'accueil
