@@ -140,3 +140,7 @@ document.getElementById('envoiAvis').addEventListener('click', function() {
     console.log("Pseudo: " + pseudo);
     console.log("Message: " + message);
 });
+
+// Fonction du compteur
+
+document.getElementById('')

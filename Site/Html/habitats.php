@@ -148,305 +148,69 @@ $rapportveterinaire_table = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <!-- Les différentes Sections de la page services -->
     <main>
 
-        <!-- Section Marais -->
-        <section id="Section_Marais">
-            <h1><?php echo htmlspecialchars($habitat_table[0]["nom"]); ?></h1>
-            <hr>
-            <div>
-                <img src="/Ressources/Images/Habitats/MaraisArcadia.png" alt="Image du Marais d'Arcadia" class="habitat_image alternativeA_border_color">
-                <div class="animal2">
-                    <p><?php echo htmlspecialchars($habitat_table[0]["textedescription"]); ?></p>
-                    <p><?php echo htmlspecialchars($habitat_table[0]["avisHabitat"]); ?></p>
+<?php foreach ($habitat_table as $habitatIndex => $habitat) : ?>
+    <!-- Section Habitat -->
+    <section class="sectionDynamique" id="Section_<?php echo htmlspecialchars($habitat['nom']); ?>">
+        <h1 class="sectionDynamique3"><?php echo htmlspecialchars($habitat['nom']); ?></h1>
+        <hr>
+        <div class="sectionDynamique2">
+            <img src="data:image/jpeg;base64,<?php echo base64_encode($habitat['imageHabitat']); ?>" alt="Image de <?php echo htmlspecialchars($habitat['nom']); ?>" class="habitat_image">
+            <div class="animal2">
+                <p><?php echo htmlspecialchars($habitat['textedescription']); ?></p>
+                <p><?php echo htmlspecialchars($habitat['avisHabitat']); ?></p>
 
-                    <!-- Animal 1 (Flamant Rose) -->
-                    <div style="position: relative;">
-                        <h1><?php echo htmlspecialchars($animaux_table[0]["nom"]); ?></h1>
-                        <hr>
-                        <img src="/Ressources/Images/Animaux/FlamingoGeneral.png" alt="Flamant Rose" class="animal_image" style="width: 100%; height: 600px;">
-                        <div class="Cache TableauStyle">
-                            <table>
-                                <tr>
-                                    <th>Espace</th>
-                                    <td><?php echo htmlspecialchars($animaux_table[0]["espace"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Âge</th>
-                                    <td><?php echo htmlspecialchars($animaux_table[0]["age"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>État de santé</th>
-                                    <td><?php echo htmlspecialchars($animaux_table[0]["etatDeSante"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Type d'alimentation</th>
-                                    <td><?php echo htmlspecialchars($nourriture_table[0]["typeAlimentation"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Grammage</th>
-                                    <td><?php echo htmlspecialchars($nourriture_table[0]["grammage"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Date d'alimentation</th>
-                                    <td><?php echo htmlspecialchars($nourriture_table[0]["dateAlimentation"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Jour du rapport vétérinaire</th>
-                                    <td><?php echo htmlspecialchars($rapportveterinaire_table[0]["jour"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Observation</th>
-                                    <td><?php echo htmlspecialchars($rapportveterinaire_table[0]["observation"]); ?></td>
-                                </tr>
-                            </table>
+                <?php foreach ($animaux_table as $animalIndex => $animal) : ?>
+                    <?php if ($animal['animauxHabitat'] == $habitat['pidHabitat']) : ?>
+                        <!-- Section Animal -->
+                        <div class="sectionDynamique" style="position: relative;">
+                            <h1 class="sectionDynamique3"><?php echo htmlspecialchars($animal['nom']); ?></h1>
+                            <hr>
+                            <img src="data:image/jpeg;base64,<?php echo base64_encode($animal['image']); ?>" alt="Image de l'animal <?php echo htmlspecialchars($animal['nom']); ?>" class="animal_image">
+                            <div class="Cache TableauStyle">
+                                <table>
+                                    <tr>
+                                        <th>Espece</th>
+                                        <td><?php echo htmlspecialchars($animal['espace']); ?></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Âge</th>
+                                        <td><?php echo htmlspecialchars($animal['age']); ?></td>
+                                    </tr>
+                                    <tr>
+                                        <th>État de santé</th>
+                                        <td><?php echo htmlspecialchars($animal['etatDeSante']); ?></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Type d'alimentation</th>
+                                        <td><?php echo htmlspecialchars($nourriture_table[$animalIndex]["typeAlimentation"]); ?></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Grammage</th>
+                                        <td><?php echo htmlspecialchars($nourriture_table[$animalIndex]["grammage"]); ?></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Date d'alimentation</th>
+                                        <td><?php echo htmlspecialchars($nourriture_table[$animalIndex]["dateAlimentation"]); ?></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Jour du rapport vétérinaire</th>
+                                        <td><?php echo htmlspecialchars($rapportveterinaire_table[$animalIndex]["jour"]); ?></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Observation</th>
+                                        <td><?php echo htmlspecialchars($rapportveterinaire_table[$animalIndex]["observation"]); ?></td>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
-                    </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
 
-
-                    <!-- Animal 2 (Crocodile) -->
-                    <div style="position: relative;">
-                        <h1><?php echo htmlspecialchars($animaux_table[1]["nom"]); ?></h1>
-                        <hr>
-                        <img src="/Ressources/Images/Animaux/CrocodileGeneral.png" alt="Crocodile" class="animal_image" style="width: 100%; height: 600px;">
-                        <div class="Cache TableauStyle">
-                            <table>
-                                <tr>
-                                    <th>Espace</th>
-                                    <td><?php echo htmlspecialchars($animaux_table[1]["espace"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Âge</th>
-                                    <td><?php echo htmlspecialchars($animaux_table[1]["age"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>État de santé</th>
-                                    <td><?php echo htmlspecialchars($animaux_table[1]["etatDeSante"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Type d'alimentation</th>
-                                    <td><?php echo htmlspecialchars($nourriture_table[1]["typeAlimentation"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Grammage</th>
-                                    <td><?php echo htmlspecialchars($nourriture_table[1]["grammage"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Date d'alimentation</th>
-                                    <td><?php echo htmlspecialchars($nourriture_table[1]["dateAlimentation"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Jour du rapport vétérinaire</th>
-                                    <td><?php echo htmlspecialchars($rapportveterinaire_table[1]["jour"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Observation</th>
-                                    <td><?php echo htmlspecialchars($rapportveterinaire_table[1]["observation"]); ?></td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-
-                </div>
             </div>
-        </section>
+        </div>
+    </section>
+<?php endforeach; ?>
 
-        <!-- Section Savane -->
-        <section id="Section_Savane">
-            <h1><?php echo htmlspecialchars($habitat_table[1]["nom"]); ?></h1>
-            <hr>
-            <div>
-                <img src="/Ressources/Images/Habitats/SavaneArcadia.png" alt="Image de la Savane d'Arcadia" class="habitat_image alternativeB_border_color">
-                <div class="animal2">
-                    <p><?php echo htmlspecialchars($habitat_table[1]["textedescription"]); ?></p>
-                    <p><?php echo htmlspecialchars($habitat_table[1]["avisHabitat"]); ?></p>
-
-                    <!-- Animal 1 (Lion) -->
-                    <div style="position: relative;">
-                        <h1><?php echo htmlspecialchars($animaux_table[2]["nom"]); ?></h1>
-                        <hr>
-                        <img src="/Ressources/Images/Animaux/LionGeneral.png" alt="Lion" class="animal_image" style="width: 100%; height: 600px;">
-                        <div class="Cache TableauStyle">
-                            <table>
-                                <tr>
-                                    <th>Espace</th>
-                                    <td><?php echo htmlspecialchars($animaux_table[2]["espace"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Âge</th>
-                                    <td><?php echo htmlspecialchars($animaux_table[2]["age"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>État de santé</th>
-                                    <td><?php echo htmlspecialchars($animaux_table[2]["etatDeSante"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Type d'alimentation</th>
-                                    <td><?php echo htmlspecialchars($nourriture_table[2]["typeAlimentation"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Grammage</th>
-                                    <td><?php echo htmlspecialchars($nourriture_table[2]["grammage"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Date d'alimentation</th>
-                                    <td><?php echo htmlspecialchars($nourriture_table[2]["dateAlimentation"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Jour du rapport vétérinaire</th>
-                                    <td><?php echo htmlspecialchars($rapportveterinaire_table[2]["jour"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Observation</th>
-                                    <td><?php echo htmlspecialchars($rapportveterinaire_table[2]["observation"]); ?></td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- Animal 2 (Girafe) -->
-                    <div style="position: relative;">
-                        <h1><?php echo htmlspecialchars($animaux_table[3]["nom"]); ?></h1>
-                        <hr>
-                        <img src="/Ressources/Images/Animaux/GirafeGeneral.png" alt="Girafe" class="animal_image" style="width: 100%; height: 600px;">
-                        <div class="Cache TableauStyle">
-                            <table>
-                                <tr>
-                                    <th>Espace</th>
-                                    <td><?php echo htmlspecialchars($animaux_table[3]["espace"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Âge</th>
-                                    <td><?php echo htmlspecialchars($animaux_table[3]["age"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>État de santé</th>
-                                    <td><?php echo htmlspecialchars($animaux_table[3]["etatDeSante"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Type d'alimentation</th>
-                                    <td><?php echo htmlspecialchars($nourriture_table[3]["typeAlimentation"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Grammage</th>
-                                    <td><?php echo htmlspecialchars($nourriture_table[3]["grammage"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Date d'alimentation</th>
-                                    <td><?php echo htmlspecialchars($nourriture_table[3]["dateAlimentation"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Jour du rapport vétérinaire</th>
-                                    <td><?php echo htmlspecialchars($rapportveterinaire_table[3]["jour"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Observation</th>
-                                    <td><?php echo htmlspecialchars($rapportveterinaire_table[3]["observation"]); ?></td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section Jungle -->
-        <section id="Section_Jungle">
-            <h1><?php echo htmlspecialchars($habitat_table[2]["nom"]); ?></h1>
-            <hr>
-            <div>
-                <img src="/Ressources/Images/Habitats/JungleArcadia.png" alt="Image de la Jungle d'Arcadia" class="habitat_image alternativeB_border_color">
-                <div class="animal2">
-                    <p><?php echo htmlspecialchars($habitat_table[2]["textedescription"]); ?></p>
-                    <p><?php echo htmlspecialchars($habitat_table[2]["avisHabitat"]); ?></p>
-
-                    <!-- Animal 1 (Serpent) -->
-                    <div style="position: relative;">
-                        <h1><?php echo htmlspecialchars($animaux_table[4]["nom"]); ?></h1>
-                        <hr>
-                        <img src="/Ressources/Images/Animaux/SerpentGeneral.png" alt="Serpent" class="animal_image" style="width: 100%; height: 600px;">
-                        <div class="Cache TableauStyle">
-                            <table>
-                                <tr>
-                                    <th>Espace</th>
-                                    <td><?php echo htmlspecialchars($animaux_table[4]["espace"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Âge</th>
-                                    <td><?php echo htmlspecialchars($animaux_table[4]["age"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>État de santé</th>
-                                    <td><?php echo htmlspecialchars($animaux_table[4]["etatDeSante"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Type d'alimentation</th>
-                                    <td><?php echo htmlspecialchars($nourriture_table[4]["typeAlimentation"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Grammage</th>
-                                    <td><?php echo htmlspecialchars($nourriture_table[4]["grammage"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Date d'alimentation</th>
-                                    <td><?php echo htmlspecialchars($nourriture_table[4]["dateAlimentation"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Jour du rapport vétérinaire</th>
-                                    <td><?php echo htmlspecialchars($rapportveterinaire_table[4]["jour"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Observation</th>
-                                    <td><?php echo htmlspecialchars($rapportveterinaire_table[4]["observation"]); ?></td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- Animal 2 (Jaguar) -->
-                    <div style="position: relative;">
-                        <h1><?php echo htmlspecialchars($animaux_table[5]["nom"]); ?></h1>
-                        <hr>
-                        <img src="/Ressources/Images/Animaux/JaguarGeneral.png" alt="Jaguar" class="animal_image" style="width: 100%; height: 600px;">
-                        <div class="Cache TableauStyle">
-                            <table>
-                                <tr>
-                                    <th>Espace</th>
-                                    <td><?php echo htmlspecialchars($animaux_table[5]["espace"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Âge</th>
-                                    <td><?php echo htmlspecialchars($animaux_table[5]["age"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>État de santé</th>
-                                    <td><?php echo htmlspecialchars($animaux_table[5]["etatDeSante"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Type d'alimentation</th>
-                                    <td><?php echo htmlspecialchars($nourriture_table[5]["typeAlimentation"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Grammage</th>
-                                    <td><?php echo htmlspecialchars($nourriture_table[5]["grammage"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Date d'alimentation</th>
-                                    <td><?php echo htmlspecialchars($nourriture_table[5]["dateAlimentation"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Jour du rapport vétérinaire</th>
-                                    <td><?php echo htmlspecialchars($rapportveterinaire_table[5]["jour"]); ?></td>
-                                </tr>
-                                <tr>
-                                    <th>Observation</th>
-                                    <td><?php echo htmlspecialchars($rapportveterinaire_table[5]["observation"]); ?></td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-    </main>
+</main>
 </body>
 </html>

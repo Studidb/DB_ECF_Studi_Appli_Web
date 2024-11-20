@@ -1,5 +1,5 @@
 /* main - Section Général */
-#Section_Train, #Section_Restaurant, #Section_Guide {
+.sectionDynamique {
     display: flex;
     flex-direction: column;
     margin-top: 1%;
@@ -8,32 +8,27 @@
 }
 
 /* main - Section Général - Image */
-#Section_Train img, #Section_Restaurant img, #Section_Guide img {
+.sectionDynamique img {
     width: 100%;
     height: auto;
-}
-#Section_Train img.alternativeA_border_color, #Section_Guide img.alternativeA_border_color {
     border: 3px solid #A0522D;
 }
-#Section_Restaurant img.alternativeB_border_color {
-    border: 3px solid #FFD700;
-}
 
-/* main - Section Général - alternance couleur A */
-#Section_Train, #Section_Guide {
-    background-color: #32CD32;
-    border-top: 3px solid #A0522D;;
-    border-bottom: 3px solid #A0522D;;
-}
-
-/* main - Section Général - alternance couleur B */
-#Section_Restaurant {
-    border-top: 3px solid #FFD700;
-    border-bottom: 3px solid #FFD700;
-    background-color: #228B22;
+.sectionDynamique2 {
+    background-color:cornflowerblue;
+    padding: 10px;
+    border: 2px solid #A0522D;
 }
 
 /* main - Section Général - Alignement du texte */
 p {
     text-align: justify;
+}
+
+.sectionDynamique3 {
+    display: flex;
+    align-self: center;
+    background-color: #A0522D;
+    padding: 10px;
+    border-radius: 10px;
 }
