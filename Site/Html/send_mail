@@ -1,0 +1,30 @@
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Récupération des données du formulaire
+    $titre = htmlspecialchars(trim($_POST['titre']));
+    $description = htmlspecialchars(trim($_POST['description']));
+    $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
+
+    // Validation de l'email
+    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        // Configuration des détails de l'email
+        $to = "contact@zooarcadia.com";
+        $subject = "Nouveau contact: " . $titre;
+        $message = "Description: " . $description . "\n\nEmail de l'expéditeur: " . $email;
+        $headers = "From: " . $email . "\r\n" .
+                   "Reply-To: " . $email . "\r\n" .
+                   "Content-Type: text/plain; charset=UTF-8\r\n";
+
+        // Envoi de l'email
+        if (mail($to, $subject, $message, $headers)) {
+            echo "Merci pour votre message. Nous vous contacterons bientôt.";
+        } else {
+            echo "Une erreur est survenue. Veuillez réessayer.";
+        }
+    } else {
+        echo "L'adresse email n'est pas valide.";
+    }
+} else {
+    echo "Méthode de requête non prise en charge.";
+}
+?>
