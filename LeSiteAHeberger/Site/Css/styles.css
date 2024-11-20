@@ -1,0 +1,233 @@
+/* Styles Global */
+@media (min-width: 728px) {
+    body {
+        font-family: "Quicksand", Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-size: 24px;
+        font-weight: bold;
+        background-color: #87CEEB;
+    }
+
+    h1 {
+        padding-top: 1%;
+        text-align: center;
+        margin: 0%;
+        font-family: "Quicksand", Arial, sans-serif;
+        font-size: 28px;
+        color: white;
+        font-weight: bold;
+    }
+
+    p {
+        font-family: "Quicksand", Arial, sans-serif;
+        font-size: 24px;
+        color: white;
+        font-weight: bold;
+    }
+
+    hr {
+        height: 2px;
+        background-color: #A0522D;
+        border: none;
+        width: 40%;
+    }
+
+    /* header - Nav Général */
+    #Section_Navigation {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: #87cfebE0;
+        padding: 5px 0;
+        z-index: 10;
+        color: white;
+        border-bottom: 5px solid #A0522D;
+    }
+
+    /* header - Alignement Nav */
+    #Section_Navigation nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0 auto;
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+
+    /* header - Alignement du menu */
+    #Section_Navigation nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        gap: 30px;
+    }
+
+    /* header - Design du menu en hover */
+    #Menu li:hover, #Menu a:hover {
+        color: #FFD700;
+        font-size: 28px;
+    }
+
+    #Menu a:hover {
+        text-decoration: none;
+        color: #FFD700;
+        font-size: 28px;
+    }
+
+    /* header - Design des hyperlien*/
+    #Menu a {
+        text-decoration: none;
+        color: white;
+    }
+
+    /* header - Design page navigante */
+    .page_navigante {
+        color: #FFD700;
+    }
+
+    /* header - Design du boutton connexion */
+    #Connexion {
+        border: 3px solid #FFD700;
+        padding-left: 24px;
+        padding-right: 24px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        border-radius: 1cap;
+        background-color: #32CD32;
+        color: white;
+    }
+
+    /* header - Design du boutton en hover */
+    #Connexion:hover {
+        border: 3px solid #A0522D;
+        background-color: #FFD700;
+        color: #A0522D;
+    }
+
+    /* Titre banniere et page */
+    .Titre_Banniere {
+        position: absolute;
+        top: 100px;
+        translate: -50%;
+        left: 50%;
+        color: white;
+        background-color: #A0522D;
+        border: 3px solid #FFD700;
+        border-radius: 30px;
+        padding: 10px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    /* header - Ajustement bannière */
+    #Section_Banniere img {
+        display: flex;
+        width: 100%;
+        height: auto;
+    }
+} /* Fermeture de la media query */
+
+/* Style pour masquer la popup par défaut */
+.modal {
+    display: none; /* Masqué par défaut */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fond transparent noir */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Style pour le contenu de la popup */
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    width: 300px;
+    text-align: center;
+    position: relative;
+    color: #A0522D;
+}
+
+/* Bouton de fermeture */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px; /* Place la croix à droite */
+    font-size: 24px;
+    cursor: pointer;
+    color: red; /* Change la couleur en rouge */
+}
+
+/* Style pour le formulaire */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+input[type="password"], input[type="email"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button[type="submit"] {
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #32CD32;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    border: 3px solid #A0522D;
+    background-color: #FFD700;
+    color: #A0522D;
+}
+
+.animal2 {
+    display: none;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 18px;
+    text-align: left;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+
+td {
+    color: #333;
+}

@@ -1,0 +1,16 @@
+Employe : 
+
+Identifiant : j.doe@arcadia.fr
+Mot de passe : jdoe
+
+
+Vétérinaire :
+
+Identifiant : g.veterinaire@arcadia.fr
+Mot de passe : gveterinaire
+
+
+Administrateur :
+
+Identifiant : j.admin@arcadia.fr
+Mot de passe : jadmin

@@ -1,0 +1,100 @@
+/* Images des habitats */
+.habitat_image {
+    width: 100%; /* L'image prendra toute la largeur de son élément parent */
+    height: auto; /* La hauteur sera ajustée automatiquement pour maintenir le ratio */
+    max-width: 100%; /* Limite la largeur maximale pour éviter les débordements */
+    object-fit: cover; /* Assure que l'image remplit correctement son conteneur */
+}
+
+
+.habitatDynamique div img {
+    display: flex;
+    width: 100%;
+    height: auto;
+}
+
+/* main - Section Général - Alignement du texte */
+p {
+    text-align: justify;
+}
+
+/* Style des tableaux */
+.TableauStyle {
+    margin: 20px auto; /* Centrer horizontalement le tableau */
+    max-width: 95%; /* Assurer que le tableau ne dépasse jamais 95% de la largeur disponible */
+    padding: 10px; /* Espacement autour du tableau */
+    position: relative; /* Permettre des ajustements internes sans fixer de position */
+}
+
+/* Style de base pour le tableau */
+table {
+    width: clamp(300px, 50%, 800px); /* La largeur varie entre 300px et 800px, avec une valeur idéale à 50% de l'écran */
+    margin: 20px 0;
+    font-size: clamp(14px, 1.5vw, 18px); /* La taille de la police varie entre 14px et 18px, selon la largeur de la vue */
+    text-align: left;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 2px solid #A0522D;
+    border-collapse: collapse; /* Assure que les bordures sont bien collées */
+}
+
+/* Styles pour les cellules */
+th, td {
+    padding: clamp(8px, 1.5vw, 15px); /* Le padding s'adapte entre 8px et 15px */
+    border-bottom: 1px solid #ddd; /* Ajoute une bordure entre les lignes pour une meilleure lisibilité */
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+
+td {
+    color: #333;
+}
+
+
+.animal_image {
+    object-fit: cover; /* Ajuste l'image pour remplir le cadre sans distorsion */
+    border-radius: 10px; /* Ajoute des coins arrondis pour un aspect plus moderne (optionnel) */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ajoute une ombre pour plus d'esthétique (optionnel) */
+}
+
+.sectionDynamique {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1%;
+    padding-right: 5%;
+    padding-left: 5%;
+}
+
+/* main - Section Général - Image */
+.sectionDynamique img {
+    width: 100%;
+    height: auto;
+    border: 3px solid #A0522D;
+}
+
+.sectionDynamique2 {
+    background-color:cornflowerblue;
+    padding: 10px;
+    border: 2px solid #A0522D;
+}
+
+.sectionDynamique3 {
+    display: flex;
+    align-self: center;
+    background-color: #A0522D;
+    padding: 10px;
+    border-radius: 10px;
+}

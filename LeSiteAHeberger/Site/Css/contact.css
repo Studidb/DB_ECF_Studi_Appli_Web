@@ -1,0 +1,61 @@
+/* Styles pour la section contact */
+#Section_Contact {
+    width: 80%;
+    margin: 20px auto;
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+#Section_Contact h2 {
+    text-align: center;
+    font-size: 24px;
+    color: #A0522D;
+    margin-bottom: 20px;
+}
+
+#Section_Contact p, #Section_Contact label {
+    color: #A0522D;
+}
+
+#Section_Contact form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#Section_Contact .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+#Section_Contact label {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+#Section_Contact input,
+#Section_Contact textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    width: 100%;
+}
+
+#Section_Contact button {
+    padding: 10px;
+    background-color: #32CD32;
+    color: white;
+    border: 2px solid #FFD700;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#Section_Contact button:hover {
+    border: 3px solid #A0522D;
+    background-color: #FFD700;
+    color: #A0522D;
+}
